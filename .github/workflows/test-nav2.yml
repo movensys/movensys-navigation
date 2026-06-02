@@ -1,0 +1,60 @@
+name: Test - movensys_navigation_nav2
+
+on:
+  pull_request:
+    branches: [main, devel]
+    paths:
+      - 'movensys_navigation_nav2/**'
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ros_distro: jazzy
+            os: ubuntu-24.04
+          - ros_distro: humble
+            os: ubuntu-22.04
+
+    runs-on: ${{ matrix.os }}
+    env:
+      NAVIGATION_MODEL: diffbot
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup ROS ${{ matrix.ros_distro }}
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.ros_distro }}
+
+      - name: Setup workspace
+        run: |
+          mkdir -p ~/movensys_ws/src
+          ln -s ${{ github.workspace }} ~/movensys_ws/src/movensys-navigation
+
+      - name: Install dependencies
+        run: |
+          sudo rosdep init || true
+          rosdep update
+          cd ~/movensys_ws
+          rosdep install --from-paths src --ignore-src -y \
+            --rosdistro ${{ matrix.ros_distro }}
+
+      - name: Build
+        run: |
+          source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+          cd ~/movensys_ws
+          colcon build --symlink-install
+
+      - name: Test manual launch file
+        run: |
+          source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+          cd ~/movensys_ws
+          source install/setup.bash
+          echo '=== launch test: manual ==='
+          timeout 30s ros2 launch navigation_package manual.launch.py \
+            use_sim_time:=true \
+            || [ $? -eq 124 ] && echo '  OK: manual exited after 30s'
