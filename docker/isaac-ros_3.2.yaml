@@ -1,0 +1,136 @@
+services:
+  movensys_navigation:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: isaac-ros_3.2.Dockerfile
+      network: host
+    image: ${IMAGE_NAME}
+    container_name: ${CONTAINER_NAME}
+    privileged: true
+    network_mode: host
+    ipc: host
+    runtime: nvidia
+    working_dir: /home/admin/workspaces/movensys_ws
+    entrypoint: ["/usr/local/bin/scripts/workspace-entrypoint.sh"]
+    stdin_open: true
+    tty: true
+    environment:
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+      - HOST_USER_UID=${HOST_USER_UID}
+      - HOST_USER_GID=${HOST_USER_GID}
+      - USER=${USER}
+      - RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION}
+      - ISAAC_ROS_WS=/home/admin/workspaces/isaac_ros-dev
+      - CYCLONEDDS_URI=file:///home/admin/workspaces/cyclonedds.xml
+      - DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - QT_X11_NO_MITSHM=1
+      - ISAAC_ROS_ACCEPT_EULA=1
+      - ROS_DISTRO=${ROS_DISTRO}
+      - NAVIGATION_MODEL=${NAVIGATION_MODEL}
+    volumes:
+      - ${ISAAC_ROS_WS}:/home/admin/workspaces/isaac_ros-dev:rw
+      - ${MOVENSYS_NAVIGATION_PACKAGES}:/home/admin/workspaces/movensys_ws/src/movensys-navigation:rw
+      - ${CYCLONEDDS_DIR}:/home/admin/workspaces/cyclonedds.xml:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+    devices:
+      - /dev/dri
+    command:
+      - /bin/bash
+      - -lc
+      - |
+        set -e
+        [ -f ~/.bashrc ] && source ~/.bashrc || true
+        sudo chown -R admin:admin /home/admin/workspaces/movensys_ws
+        source /opt/ros/humble/setup.bash
+
+        echo "ISAAC_ROS_WS=$$ISAAC_ROS_WS"
+
+        echo ====== Isaac ROS Setup =======
+        mkdir -p $$ISAAC_ROS_WS/src
+        cd $$ISAAC_ROS_WS/src
+        [ -d isaac_ros_common ]     || git clone -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git isaac_ros_common
+        [ -d isaac_ros_nvblox ]     || git clone --recursive -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_nvblox.git isaac_ros_nvblox
+        
+        echo ====== Download NVIDIA Isaac ROS assets =======
+        download_ngc_assets() {
+            local PACKAGE=$$1
+            local RESOURCE=$$2
+            local MAJOR=$$3
+            local MINOR=$$4
+            local FILENAME=$$5
+
+            local TARGET_DIR="$$ISAAC_ROS_WS/isaac_ros_assets/$$PACKAGE"
+
+            if [ -d "$$TARGET_DIR" ]; then
+                echo "Skipping $$PACKAGE — assets already exist at $$TARGET_DIR"
+                return 0
+            fi
+
+            echo "Downloading $$PACKAGE assets..."
+
+            local VERSION_URL="https://catalog.ngc.nvidia.com/api/resources/versions?orgName=nvidia&teamName=isaac&name=$$RESOURCE&isPublic=true&pageNumber=0&pageSize=100&sortOrder=CREATED_DATE_DESC"
+            local AVAILABLE_VERSIONS=$$(curl -s -H "Accept: application/json" "$$VERSION_URL")
+
+            AVAILABLE_VERSIONS=$$(echo "$$AVAILABLE_VERSIONS" | tr -d '\r')
+
+            local LATEST_VERSION_ID=$$(jq -r '
+                .recipeVersions[]
+                | .versionId as $$v
+                | $$v | select(test("^\\d+\\.\\d+\\.\\d+$$"))
+                | split(".") | {major: .[0]|tonumber, minor: .[1]|tonumber, patch: .[2]|tonumber}
+                | select(.major == '"$$MAJOR"' and .minor <= '"$$MINOR"')
+                | $$v
+            ' <<< "$$AVAILABLE_VERSIONS" | sort -V | tail -n 1)
+
+            if [ -z "$$LATEST_VERSION_ID" ]; then
+                echo "No corresponding version found for Isaac ROS $$MAJOR.$$MINOR ($$PACKAGE)"
+                echo "Found versions:"
+                jq -r '.recipeVersions[].versionId' <<< "$$AVAILABLE_VERSIONS"
+                return 1
+            fi
+
+            mkdir -p "$$ISAAC_ROS_WS/isaac_ros_assets"
+            local FILE_URL="https://api.ngc.nvidia.com/v2/resources/nvidia/isaac/$$RESOURCE/versions/$$LATEST_VERSION_ID/files/$$FILENAME"
+
+            echo "Downloading $$PACKAGE version $$LATEST_VERSION_ID..."
+            curl -LO --request GET "$$FILE_URL"
+            tar -xf "$$FILENAME" -C "$$ISAAC_ROS_WS/isaac_ros_assets"
+            rm "$$FILENAME"
+            echo "$$PACKAGE assets downloaded successfully."
+        }
+
+        download_ngc_assets "isaac_ros_nvblox" "isaac_ros_nvblox_assets" 3 2 "quickstart.tar.gz"
+
+        echo ====== Configure RealSense =======
+        touch $$ISAAC_ROS_WS/src/isaac_ros_common/scripts/.isaac_ros_common-config
+        echo CONFIG_IMAGE_KEY=ros2_humble.realsense > $$ISAAC_ROS_WS/src/isaac_ros_common/scripts/.isaac_ros_common-config
+
+        echo ====== Build ROS control pkgs =======
+        ISAAC_SRC=$$ISAAC_ROS_WS/src
+        cd $$ISAAC_ROS_WS
+        rosdep update
+        rosdep install -i -r \
+          --from-paths $$ISAAC_SRC/isaac_ros_nvblox/ \
+          --rosdistro humble -y || true
+        colcon build --symlink-install --packages-up-to isaac_ros_nvblox
+        source install/setup.bash
+
+        echo ====== Build movensys_navigation =======
+        cd /home/admin/workspaces/movensys_ws
+        source /opt/ros/humble/setup.bash
+        colcon build --symlink-install
+
+        echo ====== Pytorch compatibility on Blackwell GPU =======
+        sudo chown -R $$(id -u):$$(id -g) /home/admin/.cache/torch_extensions
+        sudo chown -R $$(id -u):$$(id -g) /home/admin/.cache/warp
+
+        echo ====== Build Terminated =======
+        source /home/admin/workspaces/movensys_ws/install/setup.bash
+        export RMW_IMPLEMENTATION=${RMW_IMPLEMENTATION}
+
+        exec bash
