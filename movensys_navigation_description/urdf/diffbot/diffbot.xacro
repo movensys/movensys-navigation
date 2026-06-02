@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="diffbot">
+  
+  <link name="base_link">
+		<visual>
+			<geometry>
+				<box size="0.64 0.52 0.1"></box>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+      <material name="">
+        <color rgba="1 1 1 1" />
+      </material>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.64 0.52 0.1"></box>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</collision>
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+			<mass value="500.0"></mass>
+			<inertia ixx="55.20416666666666" ixy="0" ixz="0" 
+					iyy="61.21770833333333" iyz="0" izz="33.088541666666664"></inertia>
+		</inertial>
+	</link>
+	
+	<joint name="castor_rear_right_joint" type="continuous">
+		<parent link="base_link"></parent>
+		<child link="castor_rear_right"></child>
+		<origin rpy="0 0 0" xyz="-0.29 -0.275 -0.035"></origin>
+		<axis xyz="0 1 0"></axis>
+	</joint>
+	
+	<link name="castor_rear_right">
+		<visual>
+			<geometry>
+				<sphere radius="0.06"></sphere>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</visual>
+    <collision>
+			<geometry>
+				<sphere radius="0.06"></sphere>
+			</geometry>
+			<origin xyz="0 0 0"></origin>
+		</collision>
+		<inertial>
+			<origin xyz="0 0 0"></origin>
+			<mass value="3.0"></mass>
+			<inertia ixx="0.001" ixy="0" ixz="0" 
+					 iyy="0.001" iyz="0" izz="0.001"></inertia>
+		</inertial>
+	</link>
+	
+	<joint name="castor_rear_left_joint" type="continuous">
+		<parent link="base_link"></parent>
+		<child link="castor_rear_left"></child>
+		<origin rpy="0 0 0" xyz="-0.29 0.275 -0.035"></origin>
+		<axis xyz="0 1 0"></axis>
+	</joint>
+	
+	<link name="castor_rear_left">
+		<visual>
+			<geometry>
+				<sphere radius="0.06"></sphere>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</visual>
+    <collision>
+			<geometry>
+				<sphere radius="0.06"></sphere>
+			</geometry>
+			<origin xyz="0 0 0"></origin>
+		</collision>
+		<inertial>
+			<origin xyz="0 0 0"></origin>
+			<mass value="3.0"></mass>
+			<inertia ixx="0.001" ixy="0" ixz="0" 
+					 iyy="0.001" iyz="0" izz="0.001"></inertia>
+		</inertial>
+	</link>
+	
+	<joint name="drivewheel_left_joint" type="continuous">
+		<parent link="base_link"></parent>
+		<child link="drivewheel_left"></child>
+		<origin rpy="-1.57 0 0" xyz="0.15 0.275 0"></origin>
+		<axis xyz="0 0 1"></axis>
+		<limit effort="100" velocity="100"></limit>
+		<dynamics damping="0.8" friction="0.8"></dynamics>
+	</joint>
+	
+	<link name="drivewheel_left">
+		<visual>
+			<geometry>
+				<cylinder length="0.05" radius="0.095"></cylinder>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="0.05" radius="0.095"></cylinder>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</collision>
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+			<mass value="40"></mass>
+			<inertia ixx="0.08775" ixy="0" ixz="0" 
+					 iyy="0.08775" iyz="0" izz="0.16199999999999998"></inertia>
+		</inertial>
+	</link>
+	
+	<joint name="drivewheel_right_joint" type="continuous">
+		<parent link="base_link"></parent>
+		<child link="drivewheel_right"></child>
+		<origin rpy="1.57 0 0" xyz="0.15 -0.275 0"></origin>
+		<axis xyz="0 0 -1"></axis>
+		<limit effort="100" velocity="100"></limit>
+		<dynamics damping="0.8" friction="0.8"></dynamics>
+	</joint>
+	
+	<link name="drivewheel_right">
+		<visual>
+			<geometry>
+				<cylinder length="0.05" radius="0.095"></cylinder>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</visual>
+		<collision>
+			<geometry>
+				<cylinder length="0.05" radius="0.095"></cylinder>
+			</geometry>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+		</collision>
+		<inertial>
+			<origin rpy="0 0 0" xyz="0 0 0"></origin>
+			<mass value="40"></mass>
+			<inertia ixx="0.08775" ixy="0" ixz="0" 
+					 iyy="0.08775" iyz="0" izz="0.16199999999999998"></inertia>
+		</inertial>
+	</link>
+
+  </xacro:macro>
+
+</robot>
