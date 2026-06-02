@@ -3,15 +3,15 @@
 
 <xacro:macro name="diffbot">
   
-  <link name="base_link">
+  	<link name="base_link">	
 		<visual>
 			<geometry>
 				<box size="0.64 0.52 0.1"></box>
 			</geometry>
 			<origin rpy="0 0 0" xyz="0 0 0"></origin>
-      <material name="">
-        <color rgba="1 1 1 1" />
-      </material>
+      		<material name="">
+        		<color rgba="1 1 1 1" />
+      		</material>
 		</visual>
 		<collision>
 			<geometry>
@@ -41,7 +41,7 @@
 			</geometry>
 			<origin rpy="0 0 0" xyz="0 0 0"></origin>
 		</visual>
-    <collision>
+    	<collision>
 			<geometry>
 				<sphere radius="0.06"></sphere>
 			</geometry>
@@ -69,7 +69,7 @@
 			</geometry>
 			<origin rpy="0 0 0" xyz="0 0 0"></origin>
 		</visual>
-    <collision>
+    	<collision>
 			<geometry>
 				<sphere radius="0.06"></sphere>
 			</geometry>

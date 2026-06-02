@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<robot name="amr" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+	<gazebo reference="lidar_front_left_link">
+		<sensor name="lidar_front_left_sensor" type="gpu_lidar">
+			<pose>0 0 0 0 0 0</pose>
+			<always_on>true</always_on>
+			<visualize>false</visualize>
+			<update_rate>35</update_rate>
+			<topic>/lidar_front_left_scan</topic>
+			<gz_frame_id>ray_link</gz_frame_id>
+			<lidar>
+				<scan>
+					<horizontal>
+						<samples>1080</samples>
+						<resolution>1</resolution>
+						<min_angle>-2.0943951023931953</min_angle>
+						<max_angle>2.0943951023931953</max_angle>
+					</horizontal>
+				</scan>
+				<range>
+					<min>0.1</min>
+					<max>30.0</max>
+					<resolution>0.01</resolution>
+				</range>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.01</stddev>
+				</noise>
+			</lidar>
+		</sensor>
+	</gazebo>
+
+	<gazebo reference="lidar_rear_right_link">
+		<sensor name="lidar_rear_right_sensor" type="gpu_lidar">
+			<pose>0 0 0 0 0 0</pose>
+			<always_on>true</always_on>
+			<visualize>false</visualize>
+			<update_rate>35</update_rate>
+			<topic>/lidar_rear_right_scan</topic>
+			<gz_frame_id>ray_link</gz_frame_id>
+			<lidar>
+				<scan>
+					<horizontal>
+						<samples>1080</samples>
+						<resolution>1</resolution>
+						<min_angle>-2.0943951023931953</min_angle>
+						<max_angle>2.0943951023931953</max_angle>
+					</horizontal>
+				</scan>
+				<range>
+					<min>0.1</min>
+					<max>30.0</max>
+					<resolution>0.01</resolution>
+				</range>
+				<noise>
+					<type>gaussian</type>
+					<mean>0.0</mean>
+					<stddev>0.01</stddev>
+				</noise>
+			</lidar>
+		</sensor>
+	</gazebo>
+
+	<gazebo reference="imu_link">
+		<gravity>true</gravity>
+		<sensor name="imu_sensor" type="imu">
+			<always_on>true</always_on>
+			<update_rate>50</update_rate>
+			<topic>/imu</topic>
+			<gz_frame_id>value_link</gz_frame_id>
+			<imu>
+				<angular_velocity>
+					<x><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></x>
+					<y><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></y>
+					<z><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></z>
+				</angular_velocity>
+				<linear_acceleration>
+					<x><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></x>
+					<y><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></y>
+					<z><noise type="gaussian"><mean>0</mean><stddev>0.00278</stddev></noise></z>
+				</linear_acceleration>
+			</imu>
+		</sensor>
+	</gazebo>
+
+	<gazebo reference="drivewheel_left">
+		<collision>
+			<surface>
+				<friction>
+					<ode>
+						<mu>1.0</mu>
+						<mu2>1.0</mu2>
+						<fdir1>1 0 0</fdir1>
+					</ode>
+				</friction>
+				<contact>
+					<ode>
+						<kp>10000000.0</kp>
+						<kd>1.0</kd>
+					</ode>
+				</contact>
+			</surface>
+		</collision>
+		<material>
+			<ambient>0 0 0 1</ambient>
+			<diffuse>0 0 0 1</diffuse>
+		</material>
+	</gazebo>
+
+	<gazebo reference="drivewheel_right">
+		<collision>
+			<surface>
+				<friction>
+					<ode>
+						<mu>1.0</mu>
+						<mu2>1.0</mu2>
+						<fdir1>1 0 0</fdir1>
+					</ode>
+				</friction>
+				<contact>
+					<ode>
+						<kp>10000000.0</kp>
+						<kd>1.0</kd>
+					</ode>
+				</contact>
+			</surface>
+		</collision>
+		<material>
+			<ambient>0 0 0 1</ambient>
+			<diffuse>0 0 0 1</diffuse>
+		</material>
+	</gazebo>
+
+	<gazebo reference="base_link">
+		<collision>
+			<surface>
+				<friction>
+					<ode>
+						<mu>1.0</mu>
+						<mu2>1.0</mu2>
+						<fdir1>1 0 0</fdir1>
+					</ode>
+				</friction>
+				<contact>
+					<ode>
+						<kp>10000000.0</kp>
+						<kd>1.0</kd>
+					</ode>
+				</contact>
+			</surface>
+		</collision>
+		<material>
+			<ambient>0 0 0 1</ambient>
+			<diffuse>0 0 0 1</diffuse>
+		</material>
+	</gazebo>
+
+	<gazebo reference="castor_rear_right">
+		<collision>
+			<surface>
+				<friction>
+					<ode>
+						<mu>1.0</mu>
+						<mu2>1.0</mu2>
+						<fdir1>1 0 0</fdir1>
+					</ode>
+				</friction>
+				<contact>
+					<ode>
+						<kp>10000000.0</kp>
+						<kd>1.0</kd>
+					</ode>
+				</contact>
+			</surface>
+		</collision>
+		<material>
+			<ambient>0 0 0 1</ambient>
+			<diffuse>0 0 0 1</diffuse>
+		</material>
+	</gazebo>
+
+	<gazebo reference="castor_rear_left">
+		<collision>
+			<surface>
+				<friction>
+					<ode>
+						<mu>1.0</mu>
+						<mu2>1.0</mu2>
+						<fdir1>1 0 0</fdir1>
+					</ode>
+				</friction>
+				<contact>
+					<ode>
+						<kp>10000000.0</kp>
+						<kd>1.0</kd>
+					</ode>
+				</contact>
+			</surface>
+		</collision>
+		<material>
+			<ambient>0 0 0 1</ambient>
+			<diffuse>0 0 0 1</diffuse>
+		</material>
+	</gazebo>
+
+</robot>

@@ -1,0 +1,137 @@
+<?xml version="1.0" ?>
+<robot name="amr" xmlns:xacro="http://ros.org/wiki/xacro">
+	
+	<joint name="lidar_front_left_joint" type="fixed">
+		<origin xyz="0.3 0.25 0.185" rpy="0 0 0.7853981633974484"/>
+		<parent link="base_link" />
+		<child link="lidar_front_left_link" />
+		<axis xyz="0 0 1" />
+	</joint>
+  
+	<link name="lidar_front_left_link">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<mass value="0.130" />
+			<inertia ixx="4E-06" ixy="0" ixz="0"
+                     iyy="4E-06"  iyz="0" izz="4E-06" />
+		</inertial>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.1" radius="0.05"></cylinder>
+			</geometry>
+		</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.1" radius="0.05"></cylinder>
+			</geometry>
+		</visual>
+	</link>
+  
+	<joint name="ray_front_left_joint" type="fixed">
+        <parent link="lidar_front_left_link"/>
+        <child link="ray_front_left_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+	</joint>
+
+	<link name="ray_front_left_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+	</link>
+
+
+
+
+
+
+    <joint name="lidar_rear_right_joint" type="fixed">
+		<origin xyz="-0.3 -0.25 0.185" rpy="0 0 -2.356194490192345"/>
+		<parent link="base_link" />
+		<child link="lidar_rear_right_link" />
+		<axis xyz="0 0 1" />
+	</joint>
+  
+	<link name="lidar_rear_right_link">
+		<inertial>
+			<origin xyz="0 0 0" rpy="0 0 0" />
+			<mass value="0.130" />
+			<inertia ixx="4E-06" ixy="0" ixz="0"
+                     iyy="4E-06"  iyz="0" izz="4E-06" />
+		</inertial>
+		<collision>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.1" radius="0.05"></cylinder>
+			</geometry>
+		</collision>
+		<visual>
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<geometry>
+				<cylinder length="0.1" radius="0.05"></cylinder>
+			</geometry>
+		</visual>
+	</link>
+  
+	<joint name="ray_rear_right_joint" type="fixed">
+        <parent link="lidar_rear_right_link"/>
+        <child link="ray_rear_right_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+	</joint>
+
+	<link name="ray_rear_right_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+	</link>
+
+
+
+
+
+
+
+  
+	<joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+
+    <link name="imu_link">
+        <inertial>
+            <mass value="0.001"/>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
+        </inertial>
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+    
+    <joint name="imu_to_value" type="fixed">
+        <parent link="imu_link"/>
+        <child link="value_link"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+    
+    <link name="value_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+    </link>
+
+</robot>
