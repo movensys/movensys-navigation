@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: isaac-ros_4.1.Dockerfile
       network: host
+      args:
+        ROS_DISTRO: ${ROS_DISTRO:-jazzy}
     image: ${IMAGE_NAME}
     container_name: ${CONTAINER_NAME}
     privileged: true

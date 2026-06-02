@@ -74,6 +74,11 @@ RUN mkdir -p /home/admin/.cache/torch_extensions && \
 COPY rviz_glsl150/ /opt/ros/humble/share/rviz_rendering/ogre_media/materials/glsl150/
 COPY rviz_scripts150/ /opt/ros/humble/share/rviz_rendering/ogre_media/materials/scripts150/
 
+# ROS_DISTRO is not part of the base image ENV, so it is empty during `docker build`
+# unless passed in (the compose file passes it as a build arg). Without this ARG the
+# conditional below matches neither branch and silently skips Gazebo/control packages
+# (e.g. gz_ros2_control). Declared here so only this layer rebuilds when it changes.
+ARG ROS_DISTRO=jazzy
 RUN apt-get update && \
     if [ "$ROS_DISTRO" = "jazzy" ]; then \
       apt-get install -y \

@@ -6,7 +6,7 @@
 
 ### Step 1b: Open Gazebo
 ```
-mros ros2 launch movensys_navigation_description gazebo_navigation_simulation.launch.py
+nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.launch.py
 ```
 
 
@@ -14,7 +14,7 @@ mros ros2 launch movensys_navigation_description gazebo_navigation_simulation.la
 
 ### Step 2a: Run simulator bridge
 ```
-mros ros2 launch movensys_navigation_nav2 sim_bridge.launch.py simulator:=isaacsim use_sim_time:=true 
+nros ros2 launch movensys_navigation_nav2 sim_bridge.launch.py simulator:=isaacsim use_sim_time:=true 
 ```
 `simulator:=gazebo` for use gazebo
 
