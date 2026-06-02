@@ -7,7 +7,6 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command
 from launch_ros.actions import Node
 
-
 def generate_launch_description():
     ros_distro = os.environ.get('ROS_DISTRO')
 
