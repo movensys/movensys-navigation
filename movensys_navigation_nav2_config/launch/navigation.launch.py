@@ -16,7 +16,8 @@ def generate_launch_description():
     map_file = os.path.join(nav2_config_share, 'maps', 'my_map.yaml')
     bt_dir = os.path.join(nav2_config_share, 'behavior_trees')
     nav_to_pose_bt = os.path.join(bt_dir, 'navigate_to_pose_w_replanning_and_recovery.xml')
-    nav_through_poses_bt = os.path.join(bt_dir, 'navigate_through_poses_w_replanning_and_recovery.xml')
+    nav_through_poses_bt = os.path.join(
+        bt_dir, 'navigate_through_poses_w_replanning_and_recovery.xml')
 
     use_sim_time = ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool)
     remappings = [('/tf', 'tf'), ('/tf_static', 'tf_static')]
@@ -70,11 +71,11 @@ def generate_launch_description():
                                        'default_nav_to_pose_bt_xml': nav_to_pose_bt,
                                        'default_nav_through_poses_bt_xml': nav_through_poses_bt}],
              remappings=remappings),
-        Node(package='nav2_waypoint_follower', executable='waypoint_follower', name='waypoint_follower',
-             output='screen', respawn=True, respawn_delay=2.0,
+        Node(package='nav2_waypoint_follower', executable='waypoint_follower',
+             name='waypoint_follower', output='screen', respawn=True, respawn_delay=2.0,
              parameters=[params_file, {'use_sim_time': use_sim_time}], remappings=remappings),
-        Node(package='nav2_velocity_smoother', executable='velocity_smoother', name='velocity_smoother',
-             output='screen', respawn=True, respawn_delay=2.0,
+        Node(package='nav2_velocity_smoother', executable='velocity_smoother',
+             name='velocity_smoother', output='screen', respawn=True, respawn_delay=2.0,
              parameters=[params_file, {'use_sim_time': use_sim_time}],
              remappings=remappings + [('cmd_vel', 'cmd_vel_nav'), ('cmd_vel_smoothed', 'cmd_vel')]),
     ])

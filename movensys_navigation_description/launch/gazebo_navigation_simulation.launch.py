@@ -4,8 +4,8 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command
 from launch_ros.actions import Node
+
 
 def generate_launch_description():
     ros_distro = os.environ.get('ROS_DISTRO')
@@ -21,12 +21,6 @@ def generate_launch_description():
 
     pkg_share = get_package_share_directory('movensys_navigation_description')
     world_path = os.path.join(pkg_share, 'worlds', world_file)
-    xacro_file = os.path.join(
-        pkg_share,
-        'urdf',
-        os.environ.get('NAVIGATION_MODEL', 'diffbot'),
-        'movensys_navigation.gazebo.xacro',
-    )
 
     # Include Gazebo sim launch file with physics optimization
     gz_sim = IncludeLaunchDescription(

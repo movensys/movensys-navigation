@@ -47,7 +47,7 @@ jobs:
           ament_flake8 --config ament_flake8.ini \
             movensys_navigation_description/launch \
             movensys_navigation_nav2_config/launch \
-            movensys_navigation_nav2_config/movensys_navigation_nav2
+            movensys_navigation_nav2_config/movensys_navigation_nav2_config
 
       - name: ament_xmllint (package.xml)
         run: |

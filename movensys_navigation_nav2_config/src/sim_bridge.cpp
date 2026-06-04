@@ -1,3 +1,5 @@
+// Copyright 2026 Movensys
+
 #include <memory>
 #include <string>
 #include <vector>
