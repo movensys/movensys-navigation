@@ -8,9 +8,9 @@
 #include "geometry_msgs/msg/twist.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
-class GazeboBridge : public rclcpp::Node{
+class SimBridge : public rclcpp::Node{
 public:
-    GazeboBridge() : Node("gazebo_bridge")
+    SimBridge() : Node("sim_bridge")
     {
         this->declare_parameter("kinematic_type", "differential_drive");
         this->declare_parameter<std::vector<std::string>>("wheel_name",
@@ -34,7 +34,7 @@ public:
         auto topic_cmd_vel         = this->get_parameter("topic_cmd_vel").as_string();
         auto topic_odom_encoder    = this->get_parameter("topic_odom_encoder").as_string();
 
-        RCLCPP_INFO(this->get_logger(), "Starting gazebo_bridge (kinematic_type: %s, wheels: %zu)",
+        RCLCPP_INFO(this->get_logger(), "Starting sim_bridge (kinematic_type: %s, wheels: %zu)",
             kinematic_type_.c_str(), wheel_name_.size());
 
         odom_encoder_pub_ = this->create_publisher<nav_msgs::msg::Odometry>(
@@ -45,11 +45,11 @@ public:
 
         encoder_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
             topic_joint_states, 1,
-            std::bind(&GazeboBridge::encoderCallback, this, std::placeholders::_1));
+            std::bind(&SimBridge::encoderCallback, this, std::placeholders::_1));
 
         cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
             topic_cmd_vel, 1,
-            std::bind(&GazeboBridge::cmdVelCallback, this, std::placeholders::_1));
+            std::bind(&SimBridge::cmdVelCallback, this, std::placeholders::_1));
     }
 
 private:
@@ -68,7 +68,7 @@ private:
     std::vector<double> omega_motor_;
 };
 
-void GazeboBridge::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg){
+void SimBridge::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg){
     std_msgs::msg::Float64MultiArray motor_data;
 
     if (kinematic_type_ == "differential_drive"){
@@ -89,7 +89,7 @@ void GazeboBridge::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg
     gazebo_pub_->publish(motor_data);
 }
 
-void GazeboBridge::encoderCallback(const sensor_msgs::msg::JointState::SharedPtr msg){
+void SimBridge::encoderCallback(const sensor_msgs::msg::JointState::SharedPtr msg){
     if (wheel_name_.size() < 2)
         return;
 
@@ -123,7 +123,7 @@ void GazeboBridge::encoderCallback(const sensor_msgs::msg::JointState::SharedPtr
 int main(int argc, char ** argv)
 {
     rclcpp::init(argc, argv);
-    auto node = std::make_shared<GazeboBridge>();
+    auto node = std::make_shared<SimBridge>();
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;

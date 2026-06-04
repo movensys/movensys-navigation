@@ -1,10 +1,17 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1a: Open Isaac Sim
-`~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation.usd`
+### Step 1: Run EKF + RSB
+```
+nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=true 
+```
 
-### Step 1b: Open Gazebo
+
+
+### Step 2a: Open Isaac Sim
+
+
+### Step 2b: Open Gazebo
 ```
 nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.launch.py
 ```
@@ -12,19 +19,22 @@ nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.la
 
 
 
-### Step 2a: Run simulator bridge
+
+
+### Step 3: Run simulator bridge
 ```
-nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py simulator:=isaacsim use_sim_time:=true 
+nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_time:=true 
 ```
-`simulator:=gazebo` for use gazebo
 
 
 
 
 
-### Step 3a: Run teleop keyboard
+
+
+### Step 4: Run teleop keyboard
 ```
-nros ros2 run teleop_twist_keyboard teleop_twist_keyboard use_sim_time:=true
+nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.5
 ```
 
 

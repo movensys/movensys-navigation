@@ -5,45 +5,24 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 
-
 def launch_setup(context, *args, **kwargs):
     use_sim_time = LaunchConfiguration("use_sim_time")
-    simulator = context.perform_substitution(LaunchConfiguration("simulator"))
-
     navigation_model = os.environ.get("NAVIGATION_MODEL", "diffbot")
-    pkg_share = get_package_share_directory("movensys_navigation_nav2_config")
+    
+    bridge_params = os.path.join(get_package_share_directory("movensys_navigation_nav2_config"), "config", navigation_model, "sim_bridge.yaml")
 
-    if simulator == "isaacsim":
-        bridge_params = os.path.join(pkg_share, "config", navigation_model, "isaacsim_bridge.yaml")
-        bridge_node = Node(
-            package="movensys_navigation_nav2_config",
-            executable="isaacsim_bridge",
-            name="isaacsim_bridge",
-            output="screen",
-            parameters=[bridge_params, {"use_sim_time": use_sim_time}],
-        )
-    elif simulator == "gazebo":
-        bridge_params = os.path.join(pkg_share, "config", navigation_model, "gazebo_bridge.yaml")
-        bridge_node = Node(
-            package="movensys_navigation_nav2_config",
-            executable="gazebo_bridge",
-            name="gazebo_bridge",
-            output="screen",
-            parameters=[bridge_params, {"use_sim_time": use_sim_time}],
-        )
-    else:
-        raise RuntimeError(f"Unknown simulator '{simulator}'. Valid options: 'isaacsim', 'gazebo'")
+    bridge_node = Node(
+        package="movensys_navigation_nav2_config",
+        executable="sim_bridge",
+        name="sim_bridge",
+        output="screen",
+        parameters=[bridge_params, {"use_sim_time": use_sim_time}],
+    )
 
     return [bridge_node]
 
-
 def generate_launch_description():
     return LaunchDescription([
-        DeclareLaunchArgument(
-            "simulator",
-            default_value="isaacsim",
-            description="Simulator to bridge: 'isaacsim' or 'gazebo'",
-        ),
         DeclareLaunchArgument(
             "use_sim_time",
             default_value="true",

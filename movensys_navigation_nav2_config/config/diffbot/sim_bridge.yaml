@@ -1,10 +1,11 @@
-gazebo_bridge:
+sim_bridge:
   ros__parameters:
     kinematic_type: "differential_drive"
     wheel_name: ["drivewheel_left_joint", "drivewheel_right_joint"]
     wheel_radius: 0.095
     wheel_to_wheel: 0.55
     topic_gazebo_commands: "/velocity_controller/commands"
+    topic_isaacsim_commands: "/joint_command"
     topic_joint_states: "/joint_states"
     topic_cmd_vel: "/cmd_vel"
     topic_odom_encoder: "/odom_encoder"

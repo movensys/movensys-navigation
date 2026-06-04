@@ -5,9 +5,9 @@ please follow this isaac-ros setup first:
  
 # 2. Docker setup
 ```
-cd ${MOVENSYS_NAVIGATION_PACKAGES}/docker                                                                              
+cd ${MOVENSYS_NAVIGATION_PACKAGES}/docker 
 docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml down
-docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml build            
+docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml build
 docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml up -d 
 ```
 

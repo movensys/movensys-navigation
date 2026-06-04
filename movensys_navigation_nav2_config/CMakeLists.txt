@@ -12,12 +12,12 @@ find_package(nav_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(gazebo_bridge src/gazebo_bridge.cpp)
-ament_target_dependencies(gazebo_bridge
+add_executable(sim_bridge src/sim_bridge.cpp)
+ament_target_dependencies(sim_bridge
   rclcpp sensor_msgs nav_msgs geometry_msgs std_msgs)
 
 install(TARGETS
-  gazebo_bridge
+  sim_bridge
   DESTINATION lib/${PROJECT_NAME}
 )
 

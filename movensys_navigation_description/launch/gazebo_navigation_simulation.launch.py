@@ -17,30 +17,20 @@ def generate_launch_description():
     imu_msg = {'humble': 'ignition.msgs.IMU', 'jazzy': 'gz.msgs.IMU'}[ros_distro]
     lidar_msg = {'humble': 'ignition.msgs.LaserScan', 'jazzy': 'gz.msgs.LaserScan'}[ros_distro]
 
-    world_file = {'humble': 'empty_sensors_ign.sdf', 'jazzy': 'empty_sensors_gz.sdf'}[ros_distro]
+    world_file = {'humble': 'arena_ign.world', 'jazzy': 'arena_gz.world'}[ros_distro]
 
     pkg_share = get_package_share_directory('movensys_navigation_description')
     world_path = os.path.join(pkg_share, 'worlds', world_file)
+    rviz_config = os.path.join(
+        get_package_share_directory('movensys_navigation_nav2_config'),
+        'rviz',
+        'navigation.rviz',
+    )
     xacro_file = os.path.join(
         pkg_share,
         'urdf',
         os.environ.get('NAVIGATION_MODEL', 'diffbot'),
         'movensys_navigation.gazebo.xacro',
-    )
-
-    # Get robot description
-    robot_description_content = Command(['xacro ', xacro_file])
-
-    robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        name='robot_state_publisher',
-        output='both',
-        parameters=[{
-            'use_sim_time': True,
-            'robot_description': robot_description_content,
-            'publish_frequency': 100.0
-        }]
     )
 
     # Include Gazebo sim launch file with physics optimization
@@ -79,6 +69,16 @@ def generate_launch_description():
         output='screen'
     )
 
+    # RViz with the navigation config from movensys_navigation_nav2_config
+    rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config],
+        parameters=[{'use_sim_time': True}],
+        output='screen'
+    )
+
     # Load controllers
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=[
@@ -98,9 +98,9 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim,
-        robot_state_publisher,
         spawn_entity_robot,
         gz_ros_bridge,
+        rviz,
         load_joint_state_broadcaster,
         load_joint_velocity_controller
     ])
