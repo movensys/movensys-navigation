@@ -14,7 +14,7 @@ nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.la
 
 ### Step 2a: Run simulator bridge
 ```
-nros ros2 launch movensys_navigation_nav2 sim_bridge.launch.py simulator:=isaacsim use_sim_time:=true 
+nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py simulator:=isaacsim use_sim_time:=true 
 ```
 `simulator:=gazebo` for use gazebo
 
@@ -24,7 +24,7 @@ nros ros2 launch movensys_navigation_nav2 sim_bridge.launch.py simulator:=isaacs
 
 ### Step 3a: Run teleop keyboard
 ```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard use_sim_time:=true
+nros ros2 run teleop_twist_keyboard teleop_twist_keyboard use_sim_time:=true
 ```
 
 

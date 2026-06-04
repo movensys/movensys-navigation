@@ -42,6 +42,7 @@ RUN apt-get update && \
         ros-humble-navigation2 \
         ros-humble-nav2-bringup \
         ros-humble-nav2-minimal-tb* \
+        ros-humble-teleop-twist-keyboard \
         curl jq tar && \
     rm -rf /var/lib/apt/lists/*
 

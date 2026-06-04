@@ -13,6 +13,7 @@ xacro_file = os.path.join(
     os.environ.get('NAVIGATION_MODEL', 'diffbot'),
     'movensys_navigation.gazebo.xacro',
 )
+
 rviz_config_path = os.path.join(
     get_package_share_directory('movensys_navigation_description'),
     'rviz',

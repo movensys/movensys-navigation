@@ -38,6 +38,7 @@ RUN apt-get update && \
       ros-jazzy-navigation2 \
       ros-jazzy-nav2-bringup \
       ros-jazzy-nav2-minimal-tb* \
+      ros-jazzy-teleop-twist-keyboard \
     && rm -rf /var/lib/apt/lists/*
 
 COPY fix_robot_segmenter.sh /tmp/fix_robot_segmenter.sh
@@ -51,10 +52,6 @@ RUN apt-get update && apt-get install -y \
         ros-jazzy-ros2controlcli \
     && rm -rf /var/lib/apt/lists/*
 
-# ROS_DISTRO is not part of the base image ENV, so it is empty during `docker build`
-# unless passed in (the compose file passes it as a build arg). Without this ARG the
-# conditional below matches neither branch and silently skips Gazebo/control packages
-# (e.g. gz_ros2_control). Declared here so only this layer rebuilds when it changes.
 ARG ROS_DISTRO=jazzy
 RUN apt-get update && \
     if [ "$ROS_DISTRO" = "jazzy" ]; then \

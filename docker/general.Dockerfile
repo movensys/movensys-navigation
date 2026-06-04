@@ -39,6 +39,7 @@ RUN apt-get update && \
       ros-${ROS_DISTRO}-navigation2 \
       ros-${ROS_DISTRO}-nav2-bringup \
       ros-${ROS_DISTRO}-nav2-minimal-tb* \
+      ros-${ROS_DISTRO}-teleop-twist-keyboard \
       python3-colcon-common-extensions \
       python3-setuptools \
     && rm -rf /var/lib/apt/lists/*

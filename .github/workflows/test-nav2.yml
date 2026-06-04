@@ -1,10 +1,10 @@
-name: Test - movensys_navigation_nav2
+name: Test - movensys_navigation_nav2_config
 
 on:
   pull_request:
     branches: [main, devel]
     paths:
-      - 'movensys_navigation_nav2/**'
+      - 'movensys_navigation_nav2_config/**'
 
 jobs:
   test:
