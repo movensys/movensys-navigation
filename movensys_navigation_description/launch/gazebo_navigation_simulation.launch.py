@@ -14,8 +14,13 @@ def generate_launch_description():
     gz_bridge_pkg = {'humble': 'ros_ign_bridge', 'jazzy': 'ros_gz_bridge'}[ros_distro]
     gz_sim_launch = {'humble': 'ign_gazebo.launch.py', 'jazzy': 'gz_sim.launch.py'}[ros_distro]
     clock_msg = {'humble': 'ignition.msgs.Clock', 'jazzy': 'gz.msgs.Clock'}[ros_distro]
+    imu_msg = {'humble': 'ignition.msgs.IMU', 'jazzy': 'gz.msgs.IMU'}[ros_distro]
+    lidar_msg = {'humble': 'ignition.msgs.LaserScan', 'jazzy': 'gz.msgs.LaserScan'}[ros_distro]
+
+    world_file = {'humble': 'empty_sensors_ign.sdf', 'jazzy': 'empty_sensors_gz.sdf'}[ros_distro]
 
     pkg_share = get_package_share_directory('movensys_navigation_description')
+    world_path = os.path.join(pkg_share, 'worlds', world_file)
     xacro_file = os.path.join(
         pkg_share,
         'urdf',
@@ -45,7 +50,7 @@ def generate_launch_description():
             f'/launch/{gz_sim_launch}'
         ]),
         launch_arguments={
-            'gz_args': '-r -v 1 empty.sdf'
+            'gz_args': f'-r -v 1 {world_path}'
         }.items()
     )
 
@@ -61,11 +66,16 @@ def generate_launch_description():
         ]
     )
 
-    # Bridge for clock
+    # Bridge for clock and sensors (gz -> ros)
     gz_ros_bridge = Node(
         package=gz_bridge_pkg,
         executable='parameter_bridge',
-        arguments=[f'/clock@rosgraph_msgs/msg/Clock[{clock_msg}'],
+        arguments=[
+            f'/clock@rosgraph_msgs/msg/Clock[{clock_msg}',
+            f'/imu@sensor_msgs/msg/Imu[{imu_msg}',
+            f'/lidar_front_left_scan@sensor_msgs/msg/LaserScan[{lidar_msg}',
+            f'/lidar_rear_right_scan@sensor_msgs/msg/LaserScan[{lidar_msg}',
+        ],
         output='screen'
     )
 
