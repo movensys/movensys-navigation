@@ -21,9 +21,11 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(DIRECTORY 
-  config 
+install(DIRECTORY
+  behavior_trees
+  config
   launch
+  maps
   rviz
   src
   DESTINATION share/${PROJECT_NAME}/

@@ -40,4 +40,12 @@ nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.
 
 
 
+### Step 5: Saving map
+```
+nros ros2 run nav2_map_server map_saver_cli -f /home/admin/workspaces/movensys_ws/src/movensys-navigation/movensys_navigation_nav2_config/maps/my_map
+```
+
+
+
+
 
