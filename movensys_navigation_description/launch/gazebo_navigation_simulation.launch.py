@@ -21,11 +21,6 @@ def generate_launch_description():
 
     pkg_share = get_package_share_directory('movensys_navigation_description')
     world_path = os.path.join(pkg_share, 'worlds', world_file)
-    rviz_config = os.path.join(
-        get_package_share_directory('movensys_navigation_nav2_config'),
-        'rviz',
-        'navigation.rviz',
-    )
     xacro_file = os.path.join(
         pkg_share,
         'urdf',
@@ -69,16 +64,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    # RViz with the navigation config from movensys_navigation_nav2_config
-    rviz = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        arguments=['-d', rviz_config],
-        parameters=[{'use_sim_time': True}],
-        output='screen'
-    )
-
     # Load controllers
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=[
@@ -100,7 +85,6 @@ def generate_launch_description():
         gz_sim,
         spawn_entity_robot,
         gz_ros_bridge,
-        rviz,
         load_joint_state_broadcaster,
         load_joint_velocity_controller
     ])

@@ -27,7 +27,7 @@
 		</inertial>
 	</link>
 	
-	<joint name="castor_rear_right_joint" type="continuous">
+	<joint name="castor_rear_right_joint" type="fixed">
 		<parent link="base_link"></parent>
 		<child link="castor_rear_right"></child>
 		<origin rpy="0 0 0" xyz="-0.29 -0.275 -0.035"></origin>
@@ -55,7 +55,7 @@
 		</inertial>
 	</link>
 	
-	<joint name="castor_rear_left_joint" type="continuous">
+	<joint name="castor_rear_left_joint" type="fixed">
 		<parent link="base_link"></parent>
 		<child link="castor_rear_left"></child>
 		<origin rpy="0 0 0" xyz="-0.29 0.275 -0.035"></origin>

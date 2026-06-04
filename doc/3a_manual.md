@@ -9,7 +9,7 @@ nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=tr
 
 
 ### Step 2a: Open Isaac Sim
-
+`~/workspaces/movensys-simulation/<MANIPULATOR_MODEL>/navigation_simulation.usd`
 
 ### Step 2b: Open Gazebo
 ```

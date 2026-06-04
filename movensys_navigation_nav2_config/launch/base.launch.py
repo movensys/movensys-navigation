@@ -16,6 +16,7 @@ def generate_launch_description():
     xacro_file = os.path.join(description_share, 'urdf', navigation_model,
                               'movensys_navigation.gazebo.xacro')
     ekf_config_file = os.path.join(nav2_config_share, 'config', navigation_model, 'ekf.yaml')
+    rviz_config = os.path.join(nav2_config_share, 'rviz', 'navigation.rviz')
 
     use_sim_time = ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool)
 
@@ -32,6 +33,12 @@ def generate_launch_description():
         name='ekf_filter_node', output='screen',
         parameters=[ekf_config_file, {'use_sim_time': use_sim_time}])
 
+    rviz = Node(
+        package='rviz2', executable='rviz2', name='rviz2',
+        arguments=['-d', rviz_config],
+        parameters=[{'use_sim_time': use_sim_time}],
+        output='screen')
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -40,4 +47,5 @@ def generate_launch_description():
         ),
         robot_state_publisher,
         start_robot_localization,
+        rviz,
     ])
