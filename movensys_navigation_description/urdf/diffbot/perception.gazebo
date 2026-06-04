@@ -8,7 +8,7 @@
 			<visualize>false</visualize>
 			<update_rate>35</update_rate>
 			<topic>/lidar_front_left_scan</topic>
-			<gz_frame_id>ray_link</gz_frame_id>
+			<gz_frame_id>ray_front_left_link</gz_frame_id>
 			<lidar>
 				<scan>
 					<horizontal>
@@ -39,7 +39,7 @@
 			<visualize>false</visualize>
 			<update_rate>35</update_rate>
 			<topic>/lidar_rear_right_scan</topic>
-			<gz_frame_id>ray_link</gz_frame_id>
+			<gz_frame_id>ray_rear_right_link</gz_frame_id>
 			<lidar>
 				<scan>
 					<horizontal>

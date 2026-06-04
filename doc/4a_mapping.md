@@ -1,9 +1,9 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1: Run EKF + RSB
+### Step 1: Mapping
 ```
-nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=true 
+nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true 
 ```
 
 
