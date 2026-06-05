@@ -12,7 +12,17 @@ def generate_launch_description():
     navigation_model = os.environ.get("NAVIGATION_MODEL", "diffbot")
     nav2_config_share = get_package_share_directory('movensys_navigation_nav2_config')
 
-    params_file = os.path.join(nav2_config_share, 'config', navigation_model, 'navigation.yaml')
+    # nav2 registers some pluginlib classes differently per distro (e.g. the
+    # navfn planner and behaviors use "/" on Humble but "::" on Jazzy), so the
+    # params file is selected from the ROS_DISTRO set in the environment
+    # (exported in ~/.bashrc / by sourcing /opt/ros/<distro>/setup.bash).
+    ros_distro = os.environ.get("ROS_DISTRO", "")
+    config_dir = os.path.join(nav2_config_share, 'config', navigation_model)
+    params_file = os.path.join(config_dir, f'navigation.{ros_distro}.yaml')
+    if not os.path.exists(params_file):
+        raise RuntimeError(
+            f"No nav2 params file for ROS_DISTRO='{ros_distro}'. "
+            f"Expected: {params_file}")
     map_file = os.path.join(nav2_config_share, 'maps', 'my_map.yaml')
     bt_dir = os.path.join(nav2_config_share, 'behavior_trees')
     nav_to_pose_bt = os.path.join(bt_dir, 'navigate_to_pose_w_replanning_and_recovery.xml')
