@@ -5,6 +5,8 @@ services:
       context: .
       dockerfile: isaac-ros_3.2.Dockerfile
       network: host
+      args:
+        ROS_DISTRO: ${ROS_DISTRO:-humble}
     image: ${IMAGE_NAME}
     container_name: ${CONTAINER_NAME}
     privileged: true

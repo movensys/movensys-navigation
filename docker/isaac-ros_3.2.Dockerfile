@@ -41,7 +41,6 @@ RUN apt-get update && \
         ros-humble-slam-toolbox \
         ros-humble-navigation2 \
         ros-humble-nav2-bringup \
-        ros-humble-nav2-minimal-tb* \
         ros-humble-teleop-twist-keyboard \
         curl jq tar && \
     rm -rf /var/lib/apt/lists/*
@@ -79,7 +78,7 @@ COPY rviz_scripts150/ /opt/ros/humble/share/rviz_rendering/ogre_media/materials/
 # unless passed in (the compose file passes it as a build arg). Without this ARG the
 # conditional below matches neither branch and silently skips Gazebo/control packages
 # (e.g. gz_ros2_control). Declared here so only this layer rebuilds when it changes.
-ARG ROS_DISTRO=jazzy
+ARG ROS_DISTRO=humble
 RUN apt-get update && \
     if [ "$ROS_DISTRO" = "jazzy" ]; then \
       apt-get install -y \
