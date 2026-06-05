@@ -1,4 +1,4 @@
-ARG ROS_DISTRO
+ARG ROS_DISTRO=jazzy
 FROM ros:${ROS_DISTRO}-ros-base
 ARG ROS_DISTRO
 USER root
@@ -38,11 +38,19 @@ RUN apt-get update && \
       ros-${ROS_DISTRO}-slam-toolbox \
       ros-${ROS_DISTRO}-navigation2 \
       ros-${ROS_DISTRO}-nav2-bringup \
-      ros-${ROS_DISTRO}-nav2-minimal-tb* \
       ros-${ROS_DISTRO}-teleop-twist-keyboard \
       python3-colcon-common-extensions \
       python3-setuptools \
     && rm -rf /var/lib/apt/lists/*
+
+# The nav2 minimal TurtleBot sim/description packages only exist on Jazzy+
+# (no Humble binaries), and an apt glob that matches nothing aborts the whole
+# install — so only attempt it on Jazzy.
+RUN if [ "${ROS_DISTRO}" = "jazzy" ]; then \
+      apt-get update && \
+      apt-get install -y ros-${ROS_DISTRO}-nav2-minimal-tb* && \
+      rm -rf /var/lib/apt/lists/*; \
+    fi
 
 ARG HOST_USER_UID=1000
 ARG HOST_USER_GID=1000

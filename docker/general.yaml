@@ -6,9 +6,9 @@ services:
       dockerfile: general.Dockerfile
       network: host
       args:
-        - ROS_DISTRO=${ROS_DISTRO}
-        - HOST_USER_UID=${HOST_USER_UID}
-        - HOST_USER_GID=${HOST_USER_GID}
+        - ROS_DISTRO=${ROS_DISTRO:-humble}
+        - HOST_USER_UID=${HOST_USER_UID:-1000}
+        - HOST_USER_GID=${HOST_USER_GID:-1000}
     image: ${IMAGE_NAME}
     container_name: ${CONTAINER_NAME}
     privileged: true
