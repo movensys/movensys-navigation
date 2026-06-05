@@ -2,10 +2,9 @@
 
 <robot name="movensys_navigation" xmlns:xacro="http://www.ros.org/wiki/xacro">
     
-    <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/diffbot.xacro" />
+    <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/movensys_navigation.xacro" />
     <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/control.xacro" />
     <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/transmission.xacro" />
-    <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/perception.xacro" />
     <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/perception.gazebo" />
 
     <link name="base_footprint"/>

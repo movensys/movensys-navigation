@@ -17,7 +17,10 @@ def generate_launch_description():
     start_base = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(nav2_config_share, 'launch', 'base.launch.py')),
-        launch_arguments={'use_sim_time': use_sim_time}.items())
+        launch_arguments={
+            'use_sim_time': use_sim_time,
+            'rsp': LaunchConfiguration('rsp'),
+        }.items())
 
     start_slam_toolbox = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -33,6 +36,11 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo/Isaac) clock if true',
+        ),
+        DeclareLaunchArgument(
+            'rsp', default_value='true',
+            description='Publish /robot_description via base.launch.py. Set false when a '
+                        'backend launch (Gazebo sim or wmx_ros2_control) already publishes it.',
         ),
         start_base,
         start_slam_toolbox,

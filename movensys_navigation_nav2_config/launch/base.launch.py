@@ -1,6 +1,7 @@
 import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
+from launch.conditions import IfCondition
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -14,7 +15,7 @@ def generate_launch_description():
     nav2_config_share = get_package_share_directory('movensys_navigation_nav2_config')
 
     xacro_file = os.path.join(description_share, 'urdf', navigation_model,
-                              'movensys_navigation.gazebo.xacro')
+                              'movensys_navigation.xacro')
     ekf_config_file = os.path.join(nav2_config_share, 'config', navigation_model, 'ekf.yaml')
     rviz_config = os.path.join(nav2_config_share, 'rviz', 'navigation.rviz')
 
@@ -23,6 +24,7 @@ def generate_launch_description():
     robot_state_publisher = Node(
         package='robot_state_publisher', executable='robot_state_publisher',
         name='robot_state_publisher', output='both',
+        condition=IfCondition(LaunchConfiguration('rsp')),
         parameters=[{
             'use_sim_time': use_sim_time,
             'robot_description': Command(['xacro ', xacro_file, ' robot_name:=amr']),
@@ -45,6 +47,12 @@ def generate_launch_description():
             'use_sim_time',
             default_value='false',
             description='Use simulation (Gazebo) clock if true',
+        ),
+        DeclareLaunchArgument(
+            'rsp',
+            default_value='true',
+            description='Publish /robot_description here. Set false when a backend '
+                        'launch (Gazebo sim or wmx_ros2_control) already publishes it.',
         ),
         robot_state_publisher,
         start_robot_localization,

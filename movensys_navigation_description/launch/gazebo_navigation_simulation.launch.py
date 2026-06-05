@@ -4,11 +4,14 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import Command
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
     ros_distro = os.environ.get('ROS_DISTRO')
+    navigation_model = os.environ.get('NAVIGATION_MODEL', 'diffbot')
 
     gz_sim_pkg = {'humble': 'ros_ign_gazebo', 'jazzy': 'ros_gz_sim'}[ros_distro]
     gz_bridge_pkg = {'humble': 'ros_ign_bridge', 'jazzy': 'ros_gz_bridge'}[ros_distro]
@@ -21,6 +24,18 @@ def generate_launch_description():
 
     pkg_share = get_package_share_directory('movensys_navigation_description')
     world_path = os.path.join(pkg_share, 'worlds', world_file)
+
+    gazebo_xacro = os.path.join(pkg_share, 'urdf', navigation_model,
+                                'movensys_navigation.gazebo.xacro')
+
+    robot_state_publisher = Node(
+        package='robot_state_publisher', executable='robot_state_publisher',
+        name='robot_state_publisher', output='both',
+        parameters=[{
+            'use_sim_time': True,
+            'robot_description': ParameterValue(
+                Command(['xacro ', gazebo_xacro, ' robot_name:=amr']), value_type=str),
+        }])
 
     # Include Gazebo sim launch file with physics optimization
     gz_sim = IncludeLaunchDescription(
@@ -76,6 +91,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        robot_state_publisher,
         gz_sim,
         spawn_entity_robot,
         gz_ros_bridge,
