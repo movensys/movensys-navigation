@@ -8,6 +8,7 @@
 #include "sensor_msgs/msg/joint_state.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "geometry_msgs/msg/twist.hpp"
+#include "geometry_msgs/msg/twist_stamped.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
 class SimBridge : public rclcpp::Node{
@@ -54,20 +55,20 @@ public:
             topic_joint_states, 1,
             std::bind(&SimBridge::encoderCallback, this, std::placeholders::_1));
 
-        cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::Twist>(
+        cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
             topic_cmd_vel, 1,
             std::bind(&SimBridge::cmdVelCallback, this, std::placeholders::_1));
     }
 
 private:
     void encoderCallback(const sensor_msgs::msg::JointState::SharedPtr msg);
-    void cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg);
+    void cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr msg);
 
     rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr gazebo_pub_;
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr isaacsim_pub_;
     rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr odom_encoder_pub_;
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr encoder_sub_;
-    rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
+    rclcpp::Subscription<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_vel_sub_;
 
     std::string kinematic_type_;
     std::vector<std::string> wheel_name_;
@@ -76,14 +77,14 @@ private:
     std::vector<double> omega_motor_;
 };
 
-void SimBridge::cmdVelCallback(const geometry_msgs::msg::Twist::SharedPtr msg){
+void SimBridge::cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr msg){
     if (kinematic_type_ == "differential_drive"){
         omega_motor_[0] =
-            (2 * msg->linear.x - msg->angular.z * wheel_to_wheel_) /
+            (2 * msg->twist.linear.x - msg->twist.angular.z * wheel_to_wheel_) /
             (2 * wheel_radius_);
 
         omega_motor_[1] =
-            (2 * msg->linear.x + msg->angular.z * wheel_to_wheel_) /
+            (2 * msg->twist.linear.x + msg->twist.angular.z * wheel_to_wheel_) /
             (2 * wheel_radius_);
     } else {
         RCLCPP_WARN_ONCE(this->get_logger(),

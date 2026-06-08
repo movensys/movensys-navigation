@@ -3,8 +3,9 @@
 
 ### Step 1: Navigation
 ```
-nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true 
+nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true rsp:=false
 ```
+> For the Isaac Sim option (not Gazebo), use `rsp:=true` (default) instead — Isaac does not publish `/robot_description`.
 
 
 

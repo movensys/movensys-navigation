@@ -5,6 +5,7 @@
 ```
 nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true 
 ```
+> `rsp` defaults to `true` here (sole `/robot_description` publisher). Use `rsp:=false` only if you run a `wmx_ros2_control` launch that publishes it.
 
 
 
