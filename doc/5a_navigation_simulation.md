@@ -1,18 +1,11 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1: Navigation
-```
-nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true rsp:=false
-```
-> For the Isaac Sim option (not Gazebo), use `rsp:=true` (default) instead — Isaac does not publish `/robot_description`.
 
-
-
-### Step 2a: Open Isaac Sim
+### Step 1a: Open Isaac Sim
 `~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation_simulation.usd`
 
-### Step 2b: Open Gazebo
+### Step 1b: Open Gazebo
 ```
 nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.launch.py
 ```
@@ -20,12 +13,23 @@ nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.la
 
 
 
-
-
-### Step 3: Run simulator bridge
+### Step 2: Run simulator bridge
 ```
 nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_time:=true 
 ```
+
+
+
+
+
+### Step 3: Navigation
+```
+nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true
+```
+add `rsp:=false` if use gazebo (step 1b).
+
+
+
 
 
 

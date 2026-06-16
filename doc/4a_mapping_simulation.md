@@ -1,18 +1,10 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1: Mapping
-```
-nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true rsp:=false
-```
-> For the Isaac Sim option (not Gazebo), use `rsp:=true` (default) instead — Isaac does not publish `/robot_description`.
-
-
-
-### Step 2a: Open Isaac Sim
+### Step 1a: Open Isaac Sim
 `~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation_simulation.usd`
 
-### Step 2b: Open Gazebo
+### Step 1b: Open Gazebo
 ```
 nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.launch.py
 ```
@@ -22,7 +14,7 @@ nros ros2 launch movensys_navigation_description gazebo_navigation_simulation.la
 
 
 
-### Step 3: Run simulator bridge
+### Step 2: Run simulator bridge
 ```
 nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_time:=true 
 ```
@@ -31,11 +23,24 @@ nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_ti
 
 
 
+### Step 3: Mapping
+```
+nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true
+```
+add `rsp:=false` if use gazebo (step 1b)
+
+
+
 
 
 ### Step 4: Run teleop keyboard
 ```
-nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.5
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args \
+      -p turn:=0.5 \
+      -p stamped:=true \
+      -p frame_id:=base_link \
+      -p use_sim_time:=true \
+      -r cmd_vel:=/cmd_vel_safe
 ```
 
 

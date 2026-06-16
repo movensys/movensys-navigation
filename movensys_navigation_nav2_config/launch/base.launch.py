@@ -34,7 +34,7 @@ def generate_launch_description():
         package='robot_localization', executable='ekf_node',
         name='ekf_filter_node', output='screen',
         parameters=[ekf_config_file, {'use_sim_time': use_sim_time}],
-        remappings=[('odometry/filtered', 'odom')])
+        remappings=[('odometry/filtered', 'odom'), ('cmd_vel', 'cmd_vel_safe')])
 
     rviz = Node(
         package='rviz2', executable='rviz2', name='rviz2',

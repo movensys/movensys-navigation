@@ -1,25 +1,27 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1: Navigation
-```
-nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true 
-```
-> `rsp` defaults to `true` here (sole `/robot_description` publisher). Use `rsp:=false` only if you run a `wmx_ros2_control` launch that publishes it.
-
-
-
-### Step 2: Open Isaac Sim
+### Step 1a: Open Isaac Sim
 `~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation_hil.usd`
 
+### Step 1b: Open Gazebo
 
 
 
 
 
-### Step 3: Run wmx-ros2 for navigation
+
+### Step 2: Run wmx-ros2 for navigation
 check `~/workspaces/movensys_ws/src/wmx-ros2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
 set `use_sim_time:=true`
+
+
+
+### Step 3: Navigation
+```
+nros ros2 launch movensys_navigation_nav2_config navigation.launch.py use_sim_time:=true
+```
+add `rsp:=false` if use gazebo (step 1b).
 
 
 

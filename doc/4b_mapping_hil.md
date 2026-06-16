@@ -1,23 +1,17 @@
 # Manual 
 ## Execution Procedure
 
-### Step 1: Mapping
-```
-nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true 
-```
-> `rsp` defaults to `true` here (sole `/robot_description` publisher). Use `rsp:=false` only if you run a `wmx_ros2_control` launch that publishes it.
-
-
-
-### Step 2: Open Isaac Sim
+### Step 1a: Open Isaac Sim
 `~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation_hil.usd`
 
+### Step 1b: Open Gazebo
 
 
 
 
 
-### Step 3: Run wmx-ros2 for navigation
+
+### Step 2: Run wmx-ros2 for navigation
 check `~/workspaces/movensys_ws/src/wmx-ros2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
 set `use_sim_time:=true`
 
@@ -27,9 +21,24 @@ set `use_sim_time:=true`
 
 
 
+### Step 3: Mapping
+```
+nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true
+```
+add `rsp:=false` if use gazebo (step 1b)
+
+
+
+
+
 ### Step 4: Run teleop keyboard
 ```
-nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.5
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args \
+      -p turn:=0.5 \
+      -p stamped:=true \
+      -p frame_id:=base_link \
+      -p use_sim_time:=true \
+      -r cmd_vel:=/cmd_vel_safe
 ```
 
 
@@ -39,8 +48,3 @@ nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.
 ```
 nros ros2 run nav2_map_server map_saver_cli -f /home/admin/workspaces/movensys_ws/src/movensys-navigation/movensys_navigation_nav2_config/maps/my_map
 ```
-
-
-
-
-
