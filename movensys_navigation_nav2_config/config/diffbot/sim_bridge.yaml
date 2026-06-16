@@ -7,5 +7,5 @@ sim_bridge:
     topic_gazebo_commands: "/velocity_controller/commands"
     topic_isaacsim_commands: "/joint_command"
     topic_joint_states: "/joint_states"
-    topic_cmd_vel: "/cmd_vel"
-    topic_odom_encoder: "/odom_encoder"
+    topic_cmd_vel: "/cmd_vel_safe"
+    topic_odom_encoder: "/odom_enc"

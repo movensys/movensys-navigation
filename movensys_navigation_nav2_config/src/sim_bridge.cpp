@@ -23,8 +23,8 @@ public:
         this->declare_parameter("topic_gazebo_commands", "/velocity_controller/commands");
         this->declare_parameter("topic_isaacsim_commands", "/joint_command");
         this->declare_parameter("topic_joint_states", "/joint_states");
-        this->declare_parameter("topic_cmd_vel", "/cmd_vel");
-        this->declare_parameter("topic_odom_encoder", "/odom_encoder");
+        this->declare_parameter("topic_cmd_vel", "/cmd_vel_safe");
+        this->declare_parameter("topic_odom_encoder", "/odom_enc");
 
         kinematic_type_ = this->get_parameter("kinematic_type").as_string();
         wheel_name_ = this->get_parameter("wheel_name").as_string_array();

@@ -33,7 +33,12 @@ add `rsp:=false` if use gazebo (step 1b) or ros2_control.
 
 ### Step 4: Run teleop keyboard
 ```
-nros ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args -p turn:=0.5 -p stamped:=true -p frame_id:=base_link
+ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args \
+      -p turn:=0.5 \
+      -p stamped:=true \
+      -p frame_id:=base_link \
+      -p use_sim_time:=true \
+      -r cmd_vel:=/cmd_vel_safe
 ```
 
 

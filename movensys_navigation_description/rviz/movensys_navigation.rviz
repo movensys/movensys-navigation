@@ -64,10 +64,6 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_footprint:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
         base_link:
           Alpha: 1
           Show Axes: false
@@ -108,8 +104,6 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        base_footprint:
-          Value: true
         base_link:
           Value: true
         castor_rear_left:
@@ -126,16 +120,15 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_footprint:
-          base_link:
-            castor_rear_left:
-              {}
-            castor_rear_right:
-              {}
-            drivewheel_left:
-              {}
-            drivewheel_right:
-              {}
+        base_link:
+          castor_rear_left:
+            {}
+          castor_rear_right:
+            {}
+          drivewheel_left:
+            {}
+          drivewheel_right:
+            {}
       Update Interval: 0
       Value: true
   Enabled: true
