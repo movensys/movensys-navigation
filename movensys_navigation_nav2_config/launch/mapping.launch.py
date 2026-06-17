@@ -1,13 +1,14 @@
 import os
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
-from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    navigation_model = os.environ.get("NAVIGATION_MODEL", "diffbot")
+    navigation_model = os.environ.get('NAVIGATION_MODEL', 'diffbot')
     nav2_config_share = get_package_share_directory('movensys_navigation_nav2_config')
     slam_toolbox_file = os.path.join(nav2_config_share, 'config', navigation_model,
                                      'slam_toolbox.yaml')
