@@ -11,13 +11,15 @@
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 
-class SimBridge : public rclcpp::Node{
+class SimBridge : public rclcpp::Node
+{
 public:
   SimBridge()
   : Node("sim_bridge")
   {
     this->declare_parameter("kinematic_type", "differential_drive");
-    this->declare_parameter<std::vector<std::string>>("wheel_name",
+    this->declare_parameter<std::vector<std::string>>(
+      "wheel_name",
       {"drivewheel_left_joint", "drivewheel_right_joint"});
     this->declare_parameter("wheel_radius", 0.095);
     this->declare_parameter("wheel_to_wheel", 0.55);
@@ -40,25 +42,26 @@ public:
     auto topic_cmd_vel = this->get_parameter("topic_cmd_vel").as_string();
     auto topic_odom_encoder = this->get_parameter("topic_odom_encoder").as_string();
 
-    RCLCPP_INFO(this->get_logger(), "Starting sim_bridge (kinematic_type: %s, wheels: %zu)",
-            kinematic_type_.c_str(), wheel_name_.size());
+    RCLCPP_INFO(
+      this->get_logger(), "Starting sim_bridge (kinematic_type: %s, wheels: %zu)",
+      kinematic_type_.c_str(), wheel_name_.size());
 
     odom_encoder_pub_ = this->create_publisher<nav_msgs::msg::Odometry>(
-            topic_odom_encoder, 1);
+      topic_odom_encoder, 1);
 
     gazebo_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>(
-            topic_gazebo_commands, 1);
+      topic_gazebo_commands, 1);
 
     isaacsim_pub_ = this->create_publisher<sensor_msgs::msg::JointState>(
-            topic_isaacsim_commands, 1);
+      topic_isaacsim_commands, 1);
 
     encoder_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
-            topic_joint_states, 1,
-            std::bind(&SimBridge::encoderCallback, this, std::placeholders::_1));
+      topic_joint_states, 1,
+      std::bind(&SimBridge::encoderCallback, this, std::placeholders::_1));
 
     cmd_vel_sub_ = this->create_subscription<geometry_msgs::msg::TwistStamped>(
-            topic_cmd_vel, 1,
-            std::bind(&SimBridge::cmdVelCallback, this, std::placeholders::_1));
+      topic_cmd_vel, 1,
+      std::bind(&SimBridge::cmdVelCallback, this, std::placeholders::_1));
   }
 
 private:
@@ -89,17 +92,18 @@ void SimBridge::cmdVelCallback(const geometry_msgs::msg::TwistStamped::SharedPtr
       (2 * msg->twist.linear.x + msg->twist.angular.z * wheel_to_wheel_) /
       (2 * wheel_radius_);
   } else {
-    RCLCPP_WARN_ONCE(this->get_logger(),
-            "Unsupported kinematic_type: %s", kinematic_type_.c_str());
+    RCLCPP_WARN_ONCE(
+      this->get_logger(),
+      "Unsupported kinematic_type: %s", kinematic_type_.c_str());
     return;
   }
 
-    // Gazebo: forward velocity command as a Float64MultiArray
+  // Gazebo: forward velocity command as a Float64MultiArray
   std_msgs::msg::Float64MultiArray motor_data;
   motor_data.data.assign(omega_motor_.begin(), omega_motor_.end());
   gazebo_pub_->publish(motor_data);
 
-    // Isaac Sim: velocity command as a JointState
+  // Isaac Sim: velocity command as a JointState
   sensor_msgs::msg::JointState joint_command;
   joint_command.header.stamp = this->get_clock()->now();
   joint_command.name = wheel_name_;
