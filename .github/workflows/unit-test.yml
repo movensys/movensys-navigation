@@ -37,6 +37,7 @@ jobs:
 
       - name: rosdep install
         run: |
+          sudo apt-get update
           sudo rosdep init || true
           rosdep update
           cd ~/movensys_ws
