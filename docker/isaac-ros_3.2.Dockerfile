@@ -42,6 +42,8 @@ RUN apt-get update && \
         ros-humble-navigation2 \
         ros-humble-nav2-bringup \
         ros-humble-teleop-twist-keyboard \
+        ros-humble-sick-safetyscanners2-interfaces \
+        ros-humble-sick-safetyscanners-base \
         curl jq tar && \
     rm -rf /var/lib/apt/lists/*
 

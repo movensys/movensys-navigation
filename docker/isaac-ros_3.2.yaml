@@ -123,6 +123,9 @@ services:
         source install/setup.bash
 
         echo ====== Build movensys_navigation =======
+        cd /home/admin/workspaces/movensys_ws/src
+        [ -d serial-ros2 ]              || git clone https://github.com/RoverRobotics-forks/serial-ros2.git serial-ros2
+        [ -d ros2_wheeltec_n100_imu ]   || git clone https://github.com/NDHANA94/ros2_wheeltec_n100_imu.git ros2_wheeltec_n100_imu
         cd /home/admin/workspaces/movensys_ws
         source /opt/ros/humble/setup.bash
         colcon build --symlink-install

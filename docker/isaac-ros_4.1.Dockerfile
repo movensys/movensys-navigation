@@ -25,6 +25,8 @@ RUN apt-get update && \
       ros-jazzy-isaac-ros-image-proc \
       ros-jazzy-joint-state-publisher \
       ros-jazzy-joint-state-publisher-gui \
+      ros-jazzy-sick-safetyscanners2-interfaces \
+      ros-jazzy-sick-safetyscanners-base \
       python3-colcon-common-extensions \
       python3-setuptools \
       ninja-build \

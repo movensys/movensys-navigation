@@ -40,7 +40,12 @@ services:
     command: ["/bin/bash","-lc",
               "sudo chown -R admin:admin /home/admin/workspaces/movensys_ws && \
                source /opt/ros/${ROS_DISTRO}/setup.bash && \
+               
+               cd /home/admin/workspaces/movensys_ws/src && \
+               { [ -d serial-ros2 ]            || git clone https://github.com/RoverRobotics-forks/serial-ros2.git serial-ros2; } && \
+               { [ -d ros2_wheeltec_n100_imu ] || git clone https://github.com/NDHANA94/ros2_wheeltec_n100_imu.git ros2_wheeltec_n100_imu; } && \
 
+               cd /home/admin/workspaces/movensys_ws && \
                echo ====== Build movensys_navigation ======= && \
                colcon build --symlink-install && \
 
