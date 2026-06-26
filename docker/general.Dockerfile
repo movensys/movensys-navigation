@@ -39,6 +39,7 @@ RUN apt-get update && \
       ros-${ROS_DISTRO}-navigation2 \
       ros-${ROS_DISTRO}-nav2-bringup \
       ros-${ROS_DISTRO}-teleop-twist-keyboard \
+      ros-${ROS_DISTRO}-sick-safetyscanners2 \
       ros-${ROS_DISTRO}-sick-safetyscanners2-interfaces \
       ros-${ROS_DISTRO}-sick-safetyscanners-base \
       python3-colcon-common-extensions \

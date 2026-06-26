@@ -2,8 +2,9 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition, UnlessCondition
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -14,6 +15,7 @@ def generate_launch_description():
 
     description_share = get_package_share_directory('movensys_navigation_description')
     nav2_config_share = get_package_share_directory('movensys_navigation_nav2_config')
+    perception_share = get_package_share_directory('movensys_navigation_perception')
 
     xacro_file = os.path.join(description_share, 'urdf', navigation_model,
                               'movensys_navigation.xacro')
@@ -43,6 +45,10 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen')
 
+    start_perception = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(os.path.join(perception_share, 'launch', f'{navigation_model}_perception.launch.py')),
+        condition=UnlessCondition(LaunchConfiguration('use_sim_time')))
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -58,4 +64,5 @@ def generate_launch_description():
         robot_state_publisher,
         start_robot_localization,
         rviz,
+        start_perception,
     ])
