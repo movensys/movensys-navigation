@@ -45,8 +45,11 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}],
         output='screen')
 
+    perception_launch = os.path.join(
+        perception_share, 'launch', f'{navigation_model}_perception.launch.py')
+
     start_perception = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(os.path.join(perception_share, 'launch', f'{navigation_model}_perception.launch.py')),
+        PythonLaunchDescriptionSource(perception_launch),
         condition=UnlessCondition(LaunchConfiguration('use_sim_time')))
 
     return LaunchDescription([
