@@ -12,7 +12,7 @@ check `~/workspaces/movensys_ws/src/wmx-ros2/doc/launch_<NAVIGATION_MODEL>_navig
 ```
 nros ros2 launch movensys_navigation_nav2_config navigation.launch.py
 ```
-
+add `rsp:=false` if use ros2_control.
 
 
 ### Step 3: Set initial pose
