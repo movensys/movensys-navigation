@@ -1,0 +1,61 @@
+name: Test - movensys_navigation_perception
+
+on:
+  pull_request:
+    branches: [main, devel]
+    paths:
+      - 'movensys_navigation_perception/**'
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - ros_distro: jazzy
+            os: ubuntu-24.04
+          - ros_distro: humble
+            os: ubuntu-22.04
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup ROS ${{ matrix.ros_distro }}
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: ${{ matrix.ros_distro }}
+
+      - name: Setup workspace
+        run: |
+          mkdir -p ~/movensys_ws/src
+          ln -s ${{ github.workspace }} ~/movensys_ws/src/movensys-navigation
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          # GH ubuntu-22.04 runners pin LLVM's libunwind, blocking the stock
+          # libunwind-dev that libgoogle-glog-dev (via slam-toolbox) needs.
+          sudo apt-get install -y libunwind-dev
+          sudo rosdep init || true
+          rosdep update
+          cd ~/movensys_ws
+          rosdep install --from-paths src/movensys-navigation/movensys_navigation_perception \
+            --ignore-src -y --rosdistro ${{ matrix.ros_distro }}
+
+      - name: Build
+        run: |
+          source /opt/ros/${{ matrix.ros_distro }}/setup.bash
+          cd ~/movensys_ws
+          colcon build --symlink-install \
+            --packages-up-to movensys_navigation_perception
+
+      - name: Validate launch files (Python syntax)
+        run: |
+          cd ${{ github.workspace }}
+          for f in movensys_navigation_perception/launch/*.launch.py; do
+            echo "py_compile $f"
+            python3 -m py_compile "$f"
+          done
