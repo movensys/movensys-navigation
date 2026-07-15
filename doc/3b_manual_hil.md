@@ -10,8 +10,8 @@
 
 
 
-### Step 2: Run wmx-ros2 for navigation
-check `~/workspaces/movensys_ws/src/wmx-ros2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
+### Step 2: Run wmx-r2 for navigation
+check `~/workspaces/movensys_ws/src/wmx-r2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
 set `use_sim_time:=true`
 
 

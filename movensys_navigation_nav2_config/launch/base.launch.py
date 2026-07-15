@@ -62,7 +62,7 @@ def generate_launch_description():
             'rsp',
             default_value='true',
             description='Publish /robot_description here. Set false when a backend '
-                        'launch (Gazebo sim or wmx_ros2_control) already publishes it.',
+                        'launch (Gazebo sim or wmx_r2_control) already publishes it.',
         ),
         robot_state_publisher,
         start_robot_localization,

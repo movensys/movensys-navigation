@@ -2,7 +2,7 @@
 
 ROS 2 packages, Docker compose configs, and end-to-end examples for driving a
 differential-drive mobile base with the
-[WMX ROS 2](https://github.com/movensys/wmx-ros2) motion control stack and the
+[WMX R2](https://github.com/movensys/wmx-r2) motion control stack and the
 [Nav2](https://docs.nav2.org/) navigation framework, on top of either Gazebo or
 [NVIDIA Isaac Sim](https://github.com/movensys/movensys-simulation).
 
@@ -41,7 +41,7 @@ SLAM Toolbox, and autonomous navigation with Nav2 against a saved map.
 | `movensys_navigation_perception`   | Sensor bring-up (LiDAR / depth) for localization and obstacle avoidance on the real base |
 
 Velocity commands reach the wheels through the
-[WMX ROS 2](https://github.com/movensys/wmx-ros2) differential-drive controller
+[WMX R2](https://github.com/movensys/wmx-r2) differential-drive controller
 (consuming `/cmd_vel_safe`) over EtherCAT; see that repository for the
 underlying motion-control nodes and the base bring-up
 (`launch_<NAVIGATION_MODEL>_navigation.md`).
@@ -156,8 +156,8 @@ Isaac Sim (or launch Gazebo), start the sim bridge, launch the base (or mapping
 
 ## Related Repositories
 
-- [wmx-ros2](https://github.com/movensys/wmx-ros2) — Core WMX ROS 2 motion control packages
-- [wmx-ros2-doc](https://github.com/movensys/wmx-ros2-doc) — Documentation site for the WMX ROS 2 stack
+- [wmx-r2](https://github.com/movensys/wmx-r2) — Core WMX R2 motion control packages
+- [wmx-r2-doc](https://github.com/movensys/wmx-r2-doc) — Documentation site for the WMX R2 stack
 - [movensys-simulation](https://github.com/movensys/movensys-simulation) — Isaac Sim USD scenes used by the examples here
 
 ## License
