@@ -26,6 +26,7 @@ RUN apt-get update && \
         ros-humble-rmw-cyclonedds-cpp \
         ros-humble-tf-transformations \
         ros-humble-isaac-ros-nvblox \
+        ros-humble-isaac-ros-visual-slam \
         ros-humble-isaac-ros-examples \
         ros-humble-isaac-ros-realsense \
         ros-humble-isaac-ros-ess \

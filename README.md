@@ -59,6 +59,11 @@ prefix selects the scenario; the trailing letter selects the execution mode.
 
 Host-setup guides (`doc/1_setup.md`, `doc/2_docker.md`) are also provided.
 
+An optional add-on, [`doc/6_cuvslam.md`](doc/6_cuvslam.md), fuses NVIDIA
+**cuVSLAM** (Isaac ROS Visual SLAM) visual-inertial odometry from a RealSense
+D435i into the EKF — enabled with `use_cuvslam:=true` on the base / mapping /
+navigation launches (requires an `isaac-ros_*` image and an NVIDIA GPU).
+
 ## Requirements
 
 - Ubuntu 22.04 or 24.04

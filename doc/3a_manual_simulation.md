@@ -25,9 +25,9 @@ nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_ti
 
 ### Step 3: Run EKF + RSP
 ```
-nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=true
+nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=true 
 ```
-add `rsp:=false` if use gazebo (step 1b).
+add `rsp:=false` if use gazebo (step 1b) and add `use_cuvslam:=true` for use cuvslam.
 
 
 

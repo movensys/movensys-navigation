@@ -36,6 +36,7 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y \
       ros-jazzy-isaac-ros-nvblox \
+      ros-jazzy-isaac-ros-visual-slam \
       ros-jazzy-robot-localization \
       ros-jazzy-slam-toolbox \
       ros-jazzy-navigation2 \

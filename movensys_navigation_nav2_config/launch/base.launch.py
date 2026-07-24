@@ -19,10 +19,13 @@ def generate_launch_description():
 
     xacro_file = os.path.join(description_share, 'urdf', navigation_model,
                               'movensys_navigation.xacro')
-    ekf_config_file = os.path.join(nav2_config_share, 'config', navigation_model, 'ekf.yaml')
+    config_dir = os.path.join(nav2_config_share, 'config', navigation_model)
+    ekf_config_file = os.path.join(config_dir, 'ekf.yaml')
+    ekf_cuvslam_config_file = os.path.join(config_dir, 'ekf_cuvslam.yaml')
     rviz_config = os.path.join(nav2_config_share, 'rviz', 'navigation.rviz')
 
     use_sim_time = ParameterValue(LaunchConfiguration('use_sim_time'), value_type=bool)
+    use_cuvslam = LaunchConfiguration('use_cuvslam')
 
     robot_state_publisher = Node(
         package='robot_state_publisher', executable='robot_state_publisher',
@@ -36,8 +39,23 @@ def generate_launch_description():
     start_robot_localization = Node(
         package='robot_localization', executable='ekf_node',
         name='ekf_filter_node', output='screen',
+        condition=UnlessCondition(use_cuvslam),
         parameters=[ekf_config_file, {'use_sim_time': use_sim_time}],
         remappings=[('odometry/filtered', 'odom'), ('cmd_vel', 'cmd_vel_safe')])
+
+    start_robot_localization_cuvslam = Node(
+        package='robot_localization', executable='ekf_node',
+        name='ekf_filter_node', output='screen',
+        condition=IfCondition(use_cuvslam),
+        parameters=[ekf_cuvslam_config_file, {'use_sim_time': use_sim_time}],
+        remappings=[('odometry/filtered', 'odom'), ('cmd_vel', 'cmd_vel_safe')])
+
+    # cuVSLAM (Isaac ROS Visual SLAM) + RealSense driver.
+    start_visual_slam = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(nav2_config_share, 'launch', 'visual_slam.launch.py')),
+        condition=IfCondition(use_cuvslam),
+        launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')}.items())
 
     rviz = Node(
         package='rviz2', executable='rviz2', name='rviz2',
@@ -64,8 +82,17 @@ def generate_launch_description():
             description='Publish /robot_description here. Set false when a backend '
                         'launch (Gazebo sim or wmx_r2_control) already publishes it.',
         ),
+        DeclareLaunchArgument(
+            'use_cuvslam',
+            default_value='false',
+            description='Fuse Isaac ROS Visual SLAM (cuVSLAM) into the EKF. When true, '
+                        'the EKF uses ekf_cuvslam.yaml and the RealSense + cuVSLAM stack '
+                        'is launched (requires an isaac-ros_* image).',
+        ),
         robot_state_publisher,
         start_robot_localization,
+        start_robot_localization_cuvslam,
+        start_visual_slam,
         rviz,
         start_perception,
     ])
