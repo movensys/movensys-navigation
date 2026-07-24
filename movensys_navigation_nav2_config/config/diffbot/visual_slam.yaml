@@ -1,0 +1,50 @@
+### Isaac ROS Visual SLAM (cuVSLAM) config ###
+# Stereo-inertial visual odometry from a RealSense D435i (infra1/infra2 + IMU).
+# The node publishes /visual_slam/tracking/odometry, which the EKF fuses as an
+# extra odometry source (see ekf_cuvslam.yaml). TF publishing is disabled here
+# because robot_localization's EKF owns the odom -> base_link transform.
+visual_slam_node:
+    ros__parameters:
+        # --- frames ---
+        # base_frame chains to the camera optical frames via:
+        #   base_link -> camera_link (URDF/robot_state_publisher)
+        #   camera_link -> camera_*_optical_frame (realsense2_camera driver)
+        base_frame: base_link
+        odom_frame: odom
+        map_frame: map
+        camera_optical_frames: [camera_front_color_optical_frame, camera_front_color_optical_frame]
+        imu_frame: camera_gyro_optical_frame
+
+        # --- cameras ---
+        num_cameras: 2
+        # RealSense infra streams are already rectified/undistorted.
+        rectified_images: true
+        enable_image_denoising: false
+        image_jitter_threshold_ms: 34.0
+
+        # --- inertial fusion (D435i IMU) ---
+        enable_imu_fusion: true
+        # Noise characteristics for the D435i BMI055 (Isaac ROS reference values).
+        gyro_noise_density: 0.000244
+        gyro_random_walk: 0.000019393
+        accel_noise_density: 0.001862
+        accel_random_walk: 0.003
+        calibration_frequency: 200.0
+
+        # --- odometry vs. full SLAM ---
+        # false = pure visual(-inertial) odometry (VO), the mode used to feed the
+        #         EKF. Set true to enable landmark mapping + loop closure if you
+        #         later want cuVSLAM to also correct map -> odom drift.
+        enable_localization_n_mapping: false
+
+        # --- TF ownership ---
+        # The EKF publishes odom -> base_link, so keep both off here.
+        publish_odom_to_base_tf: false
+        publish_map_to_odom_tf: false
+        invert_odom_to_base_tf: false
+
+        # --- visualization (off by default; enable for debugging in RViz) ---
+        enable_slam_visualization: false
+        enable_landmarks_view: false
+        enable_observations_view: false
+        verbosity: 0
