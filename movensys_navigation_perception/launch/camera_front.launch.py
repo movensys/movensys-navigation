@@ -74,9 +74,28 @@ def generate_launch_description() -> LaunchDescription:
         ],
     )
 
+    start_camera_front_transform_real = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        output="log",
+        condition=UnlessCondition(LaunchConfiguration("use_sim_time")),
+        parameters=[{"use_sim_time": False}],
+        arguments=[
+            "--frame-id", "base_link",
+            "--child-frame-id", "camera_front_link",
+            "--x", "0.4",
+            "--y", "0.0",     
+            "--z", "0.17",
+            "--roll", "-1.5707963",
+            "--pitch", "0.0",
+            "--yaw", "-1.5707963",
+        ],
+    )
+
     return LaunchDescription([
         use_sim_time_arg,
         camera_front_node,
         start_camera_front_left_transform_simulation,
         start_camera_front_right_transform_simulation,
+        start_camera_front_transform_real
     ])
