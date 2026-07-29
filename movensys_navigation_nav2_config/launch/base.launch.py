@@ -53,7 +53,7 @@ def generate_launch_description():
     # cuVSLAM (Isaac ROS Visual SLAM) + RealSense driver.
     start_visual_slam = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(perception_share, 'launch', 'visual_slam.launch.py')),
+            os.path.join(perception_share, 'launch', 'cuvslam.launch.py')),
         condition=IfCondition(use_cuvslam),
         launch_arguments={'use_sim_time': LaunchConfiguration('use_sim_time')}.items())
 
