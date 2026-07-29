@@ -2,8 +2,7 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
@@ -16,12 +15,6 @@ def generate_launch_description():
         perception_share, 'config', navigation_model, 'cuvslam.yaml')
 
     use_sim_time = LaunchConfiguration('use_sim_time')
-
-    camera_front = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(perception_share, 'launch', 'camera_front.launch.py')),
-        launch_arguments={'use_sim_time': use_sim_time}.items(),
-    )
 
     visual_slam_node = ComposableNode(
         name='visual_slam_node',
@@ -51,6 +44,5 @@ def generate_launch_description():
             default_value='false',
             description='Use simulation (Gazebo/Isaac) clock if true',
         ),
-        camera_front,
         visual_slam_container,
     ])
