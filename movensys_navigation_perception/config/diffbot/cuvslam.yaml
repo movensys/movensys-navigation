@@ -1,5 +1,5 @@
 ### Isaac ROS Visual SLAM (cuVSLAM) config ###
-# Stereo-inertial visual odometry from a RealSense D435i (infra1/infra2 + IMU).
+# Stereo-inertial visual odometry from a RealSense D455 (infra1/infra2 + IMU).
 # The node publishes /visual_slam/tracking/odometry, which the EKF fuses as an
 # extra odometry source (see ekf_cuvslam.yaml). TF publishing is disabled here
 # because robot_localization's EKF owns the odom -> base_link transform.
@@ -7,13 +7,19 @@ visual_slam_node:
     ros__parameters:
         # --- frames ---
         # base_frame chains to the camera optical frames via:
-        #   base_link -> camera_link (URDF/robot_state_publisher)
-        #   camera_link -> camera_*_optical_frame (realsense2_camera driver)
+        #   base_link -> camera_front_link (URDF/robot_state_publisher)
+        #   camera_front_link -> camera_front_*_optical_frame (realsense2_camera)
         base_frame: base_link
         odom_frame: odom
         map_frame: map
-        camera_optical_frames: [camera_front_color_optical_frame, camera_front_color_optical_frame]
-        imu_frame: camera_gyro_optical_frame
+        # One D455 = two imagers. Order must match the image_N remaps in
+        # cuvslam.launch.py: image_0 -> infra1 (left), image_1 -> infra2 (right).
+        # These names come from the driver's node name (camera_front); the driver
+        # fixes the suffixes, so infra1/infra2 rather than left/right.
+        camera_optical_frames: [camera_front_infra1_optical_frame,
+                                camera_front_infra2_optical_frame]
+                                
+        imu_frame: camera_front_gyro_optical_frame
 
         # --- cameras ---
         num_cameras: 2
@@ -22,9 +28,9 @@ visual_slam_node:
         enable_image_denoising: false
         image_jitter_threshold_ms: 34.0
 
-        # --- inertial fusion (D435i IMU) ---
-        enable_imu_fusion: true
-        # Noise characteristics for the D435i BMI055 (Isaac ROS reference values).
+        # --- inertial fusion (D455 IMU) ---
+        enable_imu_fusion: false
+        # Noise characteristics for the BMI055 (Isaac ROS reference values).
         gyro_noise_density: 0.000244
         gyro_random_walk: 0.000019393
         accel_noise_density: 0.001862
