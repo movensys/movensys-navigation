@@ -11,9 +11,9 @@ from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
     navigation_model = os.environ.get('NAVIGATION_MODEL', 'diffbot')
-    nav2_config_share = get_package_share_directory('movensys_navigation_nav2_config')
+    perception_share = get_package_share_directory('movensys_navigation_perception')
     vslam_params = os.path.join(
-        nav2_config_share, 'config', navigation_model, 'visual_slam.yaml')
+        perception_share, 'config', navigation_model, 'cuvslam.yaml')
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     launch_realsense = LaunchConfiguration('launch_realsense')
