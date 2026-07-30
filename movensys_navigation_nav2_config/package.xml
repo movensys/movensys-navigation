@@ -35,6 +35,8 @@
   <!-- mapping.launch.py -->
   <exec_depend>slam_toolbox</exec_depend>
 
+  <exec_depend>movensys_navigation_perception</exec_depend>
+
   <!-- navigation.launch.py -->
   <exec_depend>navigation2</exec_depend>
   <exec_depend>nav2_bringup</exec_depend>

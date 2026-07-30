@@ -1,10 +1,32 @@
 import math
+import os
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    pkg_share = get_package_share_directory('movensys_navigation_perception')
+    navigation_model = os.environ.get('NAVIGATION_MODEL', 'diffbot')
+    realsense_config = os.path.join(pkg_share, 'config', navigation_model,
+                                    'realsense_front.yaml')
+
+    camera_front_node = Node(
+        package='realsense2_camera',
+        executable='realsense2_camera_node',
+        name='realsense2_camera',
+        namespace='camera_front',
+        parameters=[realsense_config],
+        output='screen',
+        remappings=[
+            ('realsense2_camera/infra1/image_rect_raw', '/image_front_infra1/rgb'),
+            ('realsense2_camera/infra1/camera_info', '/image_front_infra1/camera_info'),
+            ('realsense2_camera/infra2/image_rect_raw', '/image_front_infra2/rgb'),
+            ('realsense2_camera/infra2/camera_info', '/image_front_infra2/camera_info'),
+        ],
+    )
+
     lidar_front_left_node = Node(
         package='sick_safetyscanners2',
         executable='sick_safetyscanners2_node',
@@ -75,4 +97,4 @@ def generate_launch_description():
     )
 
     return LaunchDescription(
-        [lidar_front_left_node, lidar_rear_right_node, imu_node])
+        [camera_front_node, lidar_front_left_node, lidar_rear_right_node, imu_node])
