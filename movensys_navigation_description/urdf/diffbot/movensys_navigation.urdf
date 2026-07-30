@@ -138,6 +138,23 @@
       </geometry>
     </collision>
   </link>
+  
+  <joint name="camera_front_infra1_optical_joint" type="fixed">
+    <parent link="camera_front_link"/>
+    <child link="camera_front_infra1_optical_frame"/>
+    <origin rpy="-1.5707963 0 -1.5707963" xyz="0 0 0"/>
+  </joint>
+  
+  <link name="camera_front_infra1_optical_frame"/>
+
+  <joint name="camera_front_infra2_optical_joint" type="fixed">
+    <parent link="camera_front_link"/>
+    <child link="camera_front_infra2_optical_frame"/>
+    <origin rpy="-1.5707963 0 -1.5707963" xyz="0 -0.095 0"/>
+  </joint>
+  
+  <link name="camera_front_infra2_optical_frame"/>
+  
   <link name="base_link">
     <visual>
       <geometry>

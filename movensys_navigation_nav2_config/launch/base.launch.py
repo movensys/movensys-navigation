@@ -33,7 +33,10 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('rsp')),
         parameters=[{
             'use_sim_time': use_sim_time,
-            'robot_description': Command(['xacro ', xacro_file, ' robot_name:=amr']),
+            'robot_description': Command([
+                'xacro ', xacro_file, ' robot_name:=amr',
+                ' urdf_camera_optical_tf:=', LaunchConfiguration('use_sim_time'),
+            ]),
         }])
 
     start_robot_localization = Node(
