@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<robot name="movensys_navigation" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+    <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/diffbot.xacro" />
+    <xacro:include filename="$(find movensys_navigation_description)/urdf/diffbot/perception.xacro" />
+
+    <xacro:diffbot />
+
+</robot>
