@@ -43,7 +43,8 @@ jobs:
           rosdep update
           cd ~/movensys_ws
           rosdep install --from-paths src/movensys-navigation/movensys_navigation_perception \
-            --ignore-src -y --rosdistro ${{ matrix.ros_distro }}
+            --ignore-src -y --rosdistro ${{ matrix.ros_distro }} \
+            --skip-keys isaac_ros_visual_slam
 
       - name: Build
         run: |
