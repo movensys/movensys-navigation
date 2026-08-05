@@ -47,14 +47,16 @@ jobs:
           ament_flake8 --config ament_flake8.ini \
             movensys_navigation_description/launch \
             movensys_navigation_nav2_config/launch \
-            movensys_navigation_nav2_config/movensys_navigation_nav2_config
+            movensys_navigation_nav2_config/movensys_navigation_nav2_config \
+            movensys_navigation_perception/launch
 
       - name: ament_xmllint (package.xml)
         run: |
           source /opt/ros/${{ matrix.ros_distro }}/setup.bash
           ament_xmllint \
             movensys_navigation_description/package.xml \
-            movensys_navigation_nav2_config/package.xml
+            movensys_navigation_nav2_config/package.xml \
+            movensys_navigation_perception/package.xml
 
       - name: cppcheck (warnings only, never fails)
         run: |
