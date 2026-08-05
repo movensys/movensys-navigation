@@ -55,6 +55,7 @@ jobs:
           colcon build --symlink-install \
             --packages-select \
               movensys_navigation_description \
+              movensys_navigation_perception \
               movensys_navigation_nav2_config
 
       - name: colcon test
@@ -64,6 +65,7 @@ jobs:
           source install/setup.bash
           colcon test --packages-select \
               movensys_navigation_description \
+              movensys_navigation_perception \
               movensys_navigation_nav2_config \
             --event-handlers console_cohesion+
           colcon test-result --verbose
