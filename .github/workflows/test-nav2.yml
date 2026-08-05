@@ -6,6 +6,11 @@ on:
     paths:
       - 'movensys_navigation_nav2_config/**'
 
+# Container jobs default to sh, which has no `source`.
+defaults:
+  run:
+    shell: bash
+
 jobs:
   test:
     strategy:
@@ -18,15 +23,13 @@ jobs:
             os: ubuntu-22.04
 
     runs-on: ${{ matrix.os }}
+    container: ros:${{ matrix.ros_distro }}-ros-base
     env:
       NAVIGATION_MODEL: diffbot
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup ROS ${{ matrix.ros_distro }}
-        uses: ros-tooling/setup-ros@v0.7
 
       - name: Setup workspace
         run: |
@@ -35,14 +38,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            ros-${{ matrix.ros_distro }}-ros-base
-          # GH ubuntu-22.04 runners pin LLVM's libunwind, blocking the stock
-          # libunwind-dev that libgoogle-glog-dev (via slam-toolbox) needs.
-          sudo apt-get install -y libunwind-dev
-          sudo rosdep init || true
-          rosdep update
+          apt-get update
+          rosdep update --rosdistro ${{ matrix.ros_distro }}
           cd ~/movensys_ws
           rosdep install --from-paths src --ignore-src -y \
             --rosdistro ${{ matrix.ros_distro }} \
