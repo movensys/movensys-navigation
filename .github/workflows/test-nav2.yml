@@ -27,8 +27,6 @@ jobs:
 
       - name: Setup ROS ${{ matrix.ros_distro }}
         uses: ros-tooling/setup-ros@v0.7
-        with:
-          required-ros-distributions: ${{ matrix.ros_distro }}
 
       - name: Setup workspace
         run: |
@@ -38,6 +36,8 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            ros-${{ matrix.ros_distro }}-ros-base
           # GH ubuntu-22.04 runners pin LLVM's libunwind, blocking the stock
           # libunwind-dev that libgoogle-glog-dev (via slam-toolbox) needs.
           sudo apt-get install -y libunwind-dev
@@ -45,7 +45,9 @@ jobs:
           rosdep update
           cd ~/movensys_ws
           rosdep install --from-paths src --ignore-src -y \
-            --rosdistro ${{ matrix.ros_distro }}
+            --rosdistro ${{ matrix.ros_distro }} \
+            -t buildtool -t build -t buildtool_export -t build_export -t test \
+            --skip-keys isaac_ros_visual_slam
 
       - name: Build
         run: |
