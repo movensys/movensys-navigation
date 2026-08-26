@@ -77,26 +77,13 @@ Add the following to your `~/.bashrc` (adjust the variables for your setup):
 ```
 export ROS_DOMAIN_ID=73                         # any free domain id
 export ROS_DISTRO=jazzy                         # {jazzy, humble}
-export MOVENSYS_ROS_VERSION=isaac-ros_4.1       # {isaac-ros_4.1, isaac-ros_3.2, general}
 export CPU_ARCH=amd64                           # {amd64, arm64}
-export NAVIGATION_MODEL=diffbot                 # {diffbot}
-
-export HOST_USER_UID=$(id -u)
-export HOST_USER_GID=$(id -g)
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-export MOVENSYS_NAVIGATION_PACKAGES=~/workspaces/movensys_ws/src/movensys-navigation
-export ISAAC_ROS_WS=~/workspaces/isaac_ros-dev
+export MOVENSYS_ROS_VERSION=isaac-ros_4.1       # {general, isaac-ros_4.1, isaac-ros_3.2}
+export NAVIGATION_MODEL=diffbot                 # {diffbot}
 
-nros() {
-  if [ $# -eq 0 ]; then
-    docker exec -it -u admin movensys_navigation_container \
-      bash -lc 'source /opt/ros/${ROS_DISTRO}/setup.bash && source /home/admin/workspaces/movensys_ws/install/setup.bash && exec bash -i'
-  else
-    docker exec -it -u admin movensys_navigation_container \
-      bash -lc "source /opt/ros/\${ROS_DISTRO}/setup.bash && source /home/admin/workspaces/movensys_ws/install/setup.bash && $*"
-  fi
-}
+source ~/workspaces/movensys_ws/src/movensys-navigation/docker/nros.bash
 ```
 
 ```
@@ -128,7 +115,7 @@ git clone https://github.com/movensys/movensys-navigation.git
 ### 4. Build and start the container
 
 ```
-cd ${MOVENSYS_NAVIGATION_PACKAGES}/docker
+cd ~/workspaces/movensys_ws/src/movensys-navigation/docker
 docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml down
 docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml build
 docker compose -f ${MOVENSYS_ROS_VERSION}.yaml -f movensys_navigation.${CPU_ARCH}.yaml up -d

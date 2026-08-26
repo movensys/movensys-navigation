@@ -1,30 +1,16 @@
 # Host Environment Setup
 
-## 1. Bashrc Configuration
-- Add the following environment variables to your `~/.bashrc`:
+## 1. Bashrc Configuration [~/.bashrc]
 ```
 export ROS_DOMAIN_ID=73                         #use any number
 export ROS_DISTRO=jazzy                         #support {jazzy, humble}
-export MOVENSYS_ROS_VERSION=isaac-ros_4.1       #support {isaac-ros_4.1, isaac-ros_3.2, general} 
 export CPU_ARCH=amd64                           #support {amd64, arm64}
-export NAVIGATION_MODEL=diffbot                 #support {diffbot}
-
-export HOST_USER_UID=$(id -u)
-export HOST_USER_GID=$(id -g)
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-export MOVENSYS_NAVIGATION_PACKAGES=~/workspaces/movensys_ws/src/movensys-navigation
-export ISAAC_ROS_WS=~/workspaces/isaac_ros-dev
+export MOVENSYS_ROS_VERSION=isaac-ros_4.1       #support {general, isaac-ros_4.1, isaac-ros_3.2}
+export NAVIGATION_MODEL=diffbot                 #support {diffbot}
 
-nros() {
-  if [ $# -eq 0 ]; then
-    docker exec -it -u admin movensys_navigation_container \
-      bash -lc 'source /opt/ros/${ROS_DISTRO}/setup.bash && source /home/admin/workspaces/movensys_ws/install/setup.bash && exec bash -i'
-  else
-    docker exec -it -u admin movensys_navigation_container \
-      bash -lc "source /opt/ros/\${ROS_DISTRO}/setup.bash && source /home/admin/workspaces/movensys_ws/install/setup.bash && $*"
-  fi
-}
+source ~/workspaces/movensys_ws/src/movensys-navigation/docker/nros.bash
 ```
 ```
 xhost +local:docker
@@ -44,7 +30,7 @@ sudo sysctl -p /etc/sysctl.d/99-network-buffers.conf
 sysctl net.core.rmem_max net.core.rmem_default net.core.wmem_max net.core.wmem_default
 ```
 
-## 4. Clone Repository
+## 3. Clone Repository
 ```
 mkdir -p  ~/workspaces/movensys_ws/src
 cd ~/workspaces/movensys_ws/src
