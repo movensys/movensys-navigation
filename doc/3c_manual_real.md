@@ -1,18 +1,18 @@
-# Manual 
+# Manual Driving
 ## Execution Procedure
 
 ### Step 1: Run wmx-r2 for navigation
-check `~/workspaces/movensys_ws/src/wmx-r2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
+check `~/workspaces/movensys_ws/src/wmx-r2/doc/launch_differential.md` 
 
 
 
 
 
-### Step 2: Run EKF + RSB
+### Step 2: Run EKF + RSP
 ```
 nros ros2 launch movensys_navigation_nav2_config base.launch.py
 ```
-add `rsp:=false` if use ros2_control add `use_cuvslam:=true` for use cuvslam.
+add `rsp:=false` if use ros2_control. add `use_cuvslam:=true` for use cuvslam.
 
 
 

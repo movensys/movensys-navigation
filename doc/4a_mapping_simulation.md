@@ -1,4 +1,4 @@
-# Manual 
+# SLAM Mapping
 ## Execution Procedure
 
 ### Step 1a: Open Isaac Sim
@@ -27,7 +27,7 @@ nros ros2 launch movensys_navigation_nav2_config sim_bridge.launch.py use_sim_ti
 ```
 nros ros2 launch movensys_navigation_nav2_config mapping.launch.py use_sim_time:=true 
 ```
-add `rsp:=false` if use gazebo (step 1b) add `use_cuvslam:=true` for use cuvslam
+add `rsp:=false` if use gazebo (step 1b). add `use_cuvslam:=true` for use cuvslam.
 
 
 

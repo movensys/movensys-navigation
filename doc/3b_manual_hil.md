@@ -1,17 +1,15 @@
-# Manual 
+# Manual Driving
 ## Execution Procedure
 
-### Step 1a: Open Isaac Sim
+### Step 1: Open Isaac Sim
 `~/workspaces/movensys-simulation/<NAVIGATION_MODEL>/navigation_hil.usd`
-
-### Step 1b: Open Gazebo
 
 
 
 
 
 ### Step 2: Run wmx-r2 for navigation
-check `~/workspaces/movensys_ws/src/wmx-r2/doc/launch_<NAVIGATION_MODEL>_navigation.md` 
+check `~/workspaces/movensys_ws/src/wmx-r2/doc/launch_differential.md` 
 set `use_sim_time:=true`
 
 
@@ -19,11 +17,11 @@ set `use_sim_time:=true`
 
 
 
-### Step 3: Run EKF + RSB
+### Step 3: Run EKF + RSP
 ```
 nros ros2 launch movensys_navigation_nav2_config base.launch.py use_sim_time:=true 
 ```
-add `rsp:=false` if use gazebo (step 1b) or ros2_control add `use_cuvslam:=true` for use cuvslam.
+add `rsp:=false` if use ros2_control. add `use_cuvslam:=true` for use cuvslam.
 
 
 

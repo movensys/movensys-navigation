@@ -44,7 +44,7 @@ Velocity commands reach the wheels through the
 [WMX R2](https://github.com/movensys/wmx-r2) differential-drive controller
 (consuming `/cmd_vel_safe`) over EtherCAT; see that repository for the
 underlying motion-control nodes and the base bring-up
-(`launch_<NAVIGATION_MODEL>_navigation.md`).
+(`launch_differential.md`).
 
 ## Examples
 
