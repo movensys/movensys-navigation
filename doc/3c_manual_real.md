@@ -1,4 +1,4 @@
-# Manual Driving
+# Manual Driving (Real)
 ## Execution Procedure
 
 ### Step 1: Run wmx-r2 for navigation

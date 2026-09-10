@@ -1,4 +1,4 @@
-# SLAM Mapping
+# SLAM Mapping (HIL)
 ## Execution Procedure
 
 ### Step 1: Open Isaac Sim

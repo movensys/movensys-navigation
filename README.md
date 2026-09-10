@@ -14,18 +14,22 @@ follows paths; WMX turns the resulting velocity commands into deterministic
 wheel motion over EtherCAT. It supports three execution modes for every
 example:
 
-- **Simulation** — pure simulation (Isaac Sim or Gazebo), no hardware
-- **SIL** — simulation-in-the-loop, simulator visuals + real WMX runtime
-- **Real** — control of the real base via WMX over EtherCAT
+- **Simulation**: pure simulation (Isaac Sim or Gazebo), no hardware
+- **HIL**: hardware-in-the-loop, simulator visuals with the real WMX runtime
+- **Real**: control of the real base via WMX over EtherCAT
 
 The included examples cover manual (teleop) driving, SLAM map building with
 SLAM Toolbox, and autonomous navigation with Nav2 against a saved map.
+
+Odometry has two options. By default the `robot_localization` EKF fuses wheel
+odometry from WMX R2. Passing `use_cuvslam:=true` instead runs Isaac ROS Visual
+SLAM and fuses its visual odometry as a second EKF source (`ekf_cuvslam.yaml`).
 
 ## Repository Layout
 
 ```
 .
-├── movensys_navigation_description/   # URDF, meshes, Gazebo world & RViz launch
+├── movensys_navigation_description/   # URDF/xacro, Gazebo worlds & RViz launch
 ├── movensys_navigation_nav2_config/   # Nav2 params, EKF, SLAM, sim bridge, launches
 ├── movensys_navigation_perception/    # Sensor bring-up for the real base
 ├── docker/                            # Compose stacks and Dockerfiles
@@ -36,9 +40,9 @@ SLAM Toolbox, and autonomous navigation with Nav2 against a saved map.
 
 | Package | Description |
 |---------|-------------|
-| `movensys_navigation_description`  | URDF/xacro, meshes, Gazebo world, and RViz bring-up for the `diffbot` differential-drive base |
-| `movensys_navigation_nav2_config`  | Nav2 configuration (planner, controller, behavior tree, AMCL), the `robot_localization` EKF, SLAM Toolbox config, the `sim_bridge` node, and the `base` / `mapping` / `navigation` launches |
-| `movensys_navigation_perception`   | Sensor bring-up (LiDAR / depth) for localization and obstacle avoidance on the real base |
+| `movensys_navigation_description`  | URDF/xacro, Gazebo worlds, and RViz bring-up for the `diffbot` differential-drive base |
+| `movensys_navigation_nav2_config`  | Nav2 configuration (planner, controller, behavior tree, AMCL), the `robot_localization` EKF (wheel-odometry and cuVSLAM variants), SLAM Toolbox config, a saved map, the `sim_bridge` node, and the `base` / `mapping` / `navigation` / `sim_bridge` launches |
+| `movensys_navigation_perception`   | Sensor bring-up for the real base: SICK safety scanners (LiDAR), a RealSense depth camera, and Isaac ROS Visual SLAM (cuVSLAM) |
 
 Velocity commands reach the wheels through the
 [WMX R2](https://github.com/movensys/wmx-r2) differential-drive controller
@@ -51,7 +55,7 @@ underlying motion-control nodes and the base bring-up
 Each example has a dedicated walkthrough under [`doc/`](doc/). The numbered
 prefix selects the scenario; the trailing letter selects the execution mode.
 
-| #  | Scenario                | Simulation                                   | SIL                                   | Real                                   |
+| #  | Scenario                | Simulation                                   | HIL                                   | Real                                   |
 |----|-------------------------|----------------------------------------------|---------------------------------------|----------------------------------------|
 | 3  | Manual driving          | [3a](doc/3a_manual_simulation.md)            | [3b](doc/3b_manual_hil.md)            | [3c](doc/3c_manual_real.md)            |
 | 4  | SLAM mapping            | [4a](doc/4a_mapping_simulation.md)           | [4b](doc/4b_mapping_hil.md)           | [4c](doc/4c_mapping_real.md)           |

@@ -1,4 +1,4 @@
-# SLAM Mapping
+# SLAM Mapping (Simulation)
 ## Execution Procedure
 
 ### Step 1a: Open Isaac Sim

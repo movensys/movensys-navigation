@@ -1,4 +1,4 @@
-# Manual Driving
+# Manual Driving (HIL)
 ## Execution Procedure
 
 ### Step 1: Open Isaac Sim
