@@ -11,8 +11,9 @@
 
   <depend>urdf</depend>
   <depend>xacro</depend>
-  <depend>ros_gz_sim</depend>
-  <depend>ros2_control</depend>
+  <!-- Launch-time only; nothing here is compiled against. -->
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros2_control</exec_depend>
 
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
@@ -34,6 +35,8 @@
 
   <!-- mapping.launch.py -->
   <exec_depend>slam_toolbox</exec_depend>
+
+  <exec_depend>movensys_navigation_perception</exec_depend>
 
   <!-- navigation.launch.py -->
   <exec_depend>navigation2</exec_depend>

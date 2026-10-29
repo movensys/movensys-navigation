@@ -45,6 +45,7 @@ def generate_launch_description():
         launch_arguments={
             'use_sim_time': LaunchConfiguration('use_sim_time'),
             'rsp': LaunchConfiguration('rsp'),
+            'use_cuvslam': LaunchConfiguration('use_cuvslam'),
         }.items())
 
     # --- localization (map_server + amcl) ---
@@ -110,6 +111,9 @@ def generate_launch_description():
             'rsp', default_value='true',
             description='Publish /robot_description via base.launch.py. Set false when a '
                         'backend launch (Gazebo sim or wmx_r2_control) already publishes it.'),
+        DeclareLaunchArgument(
+            'use_cuvslam', default_value='false',
+            description='Fuse Isaac ROS Visual SLAM (cuVSLAM) into the EKF (see base.launch.py).'),
         start_base,
         map_server,
         amcl,

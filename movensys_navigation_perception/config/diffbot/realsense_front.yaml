@@ -1,0 +1,30 @@
+/**:
+    ros__parameters:
+        device_type: ''
+        serial_no: '333422302722'
+        usb_port_id: ''
+
+        enable_infra1: true
+        enable_infra2: true
+        enable_color: false
+        enable_depth: false
+
+        depth_module:
+            emitter_enabled: 0
+            profile: '640x360x90'
+
+        enable_gyro: true
+        enable_accel: true
+        gyro_fps: 200
+        accel_fps: 200
+        unite_imu_method: 2 
+
+        enable_sync: true
+
+        camera_resolution:
+            width: 640
+            height: 480
+        camera_name: 'camera_front'
+        focal_length:
+            f_x: 380.0
+            f_y: 380.0

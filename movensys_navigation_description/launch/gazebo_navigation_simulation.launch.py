@@ -19,6 +19,9 @@ def generate_launch_description():
     clock_msg = {'humble': 'ignition.msgs.Clock', 'jazzy': 'gz.msgs.Clock'}[ros_distro]
     imu_msg = {'humble': 'ignition.msgs.IMU', 'jazzy': 'gz.msgs.IMU'}[ros_distro]
     lidar_msg = {'humble': 'ignition.msgs.LaserScan', 'jazzy': 'gz.msgs.LaserScan'}[ros_distro]
+    image_msg = {'humble': 'ignition.msgs.Image', 'jazzy': 'gz.msgs.Image'}[ros_distro]
+    camera_info_msg = {'humble': 'ignition.msgs.CameraInfo',
+                       'jazzy': 'gz.msgs.CameraInfo'}[ros_distro]
 
     world_file = {'humble': 'arena_ign.world', 'jazzy': 'arena_gz.world'}[ros_distro]
 
@@ -69,6 +72,14 @@ def generate_launch_description():
             f'/imu@sensor_msgs/msg/Imu[{imu_msg}',
             f'/lidar_front_left_scan@sensor_msgs/msg/LaserScan[{lidar_msg}',
             f'/lidar_rear_right_scan@sensor_msgs/msg/LaserScan[{lidar_msg}',
+            f'/image_front_infra1/rgb@sensor_msgs/msg/Image[{image_msg}',
+            f'/image_front_infra1/rgb/camera_info@sensor_msgs/msg/CameraInfo[{camera_info_msg}',
+            f'/image_front_infra2/rgb@sensor_msgs/msg/Image[{image_msg}',
+            f'/image_front_infra2/rgb/camera_info@sensor_msgs/msg/CameraInfo[{camera_info_msg}',
+        ],
+        remappings=[
+            ('/image_front_infra1/rgb/camera_info', '/image_front_infra1/camera_info'),
+            ('/image_front_infra2/rgb/camera_info', '/image_front_infra2/camera_info'),
         ],
         output='screen'
     )
