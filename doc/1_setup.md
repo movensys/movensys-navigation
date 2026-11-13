@@ -3,12 +3,12 @@
 ## 1. Bashrc Configuration [~/.bashrc]
 ```
 export ROS_DOMAIN_ID=73                         #use any number
-export ROS_DISTRO=jazzy                         #support {jazzy, humble}
-export CPU_ARCH=amd64                           #support {amd64, arm64}
+export ROS_DISTRO=jazzy                         #tested {jazzy, humble}
+export CPU_ARCH=x86-64                          #tested {x86-64, arm64}
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-export MOVENSYS_ROS_VERSION=isaac-ros_4.1       #support {general, isaac-ros_4.1, isaac-ros_3.2}
-export NAVIGATION_MODEL=diffbot                 #support {diffbot}
+export MOVENSYS_ROS_VERSION=isaac-ros_4.1       #tested {general, isaac-ros_4.1, isaac-ros_3.2}
+export NAVIGATION_MODEL=diffbot                 #tested {diffbot}
 
 source ~/workspaces/movensys_ws/src/movensys-navigation/docker/nros.bash
 ```
