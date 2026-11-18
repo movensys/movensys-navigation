@@ -79,7 +79,7 @@ Host-setup guides (`doc/1_setup.md`, `doc/2_docker.md`) are also provided.
 Add the following to your `~/.bashrc` (adjust the variables for your setup):
 
 ```
-export ROS_DOMAIN_ID=73                         # any free domain id
+export ROS_DOMAIN_ID=70                         # any free domain id
 export ROS_DISTRO=jazzy                         # {jazzy, humble}
 export CPU_ARCH=x86-64                          # {x86-64, arm64}
 export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
